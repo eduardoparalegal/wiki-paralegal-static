@@ -1,8 +1,7 @@
-// src/assets/js/animation.js
+// docs/assets/js/animation.js
 (function() {
     var width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
 
-    // Main
     initHeader();
     initAnimation();
     addListeners();
@@ -68,7 +67,6 @@
         }
     }
 
-    // Event handling
     function addListeners() {
         if(!('ontouchstart' in window)) {
             window.addEventListener('mousemove', mouseMove);
@@ -104,7 +102,6 @@
         canvas.height = height;
     }
 
-    // animation
     function initAnimation() {
         animate();
         for(var i in points) {
@@ -116,7 +113,6 @@
         if(animateHeader) {
             ctx.clearRect(0,0,width,height);
             for(var i in points) {
-                // detect points in range
                 if(Math.abs(getDistance(target, points[i])) < 4000) {
                     points[i].active = 0.3;
                     points[i].circle.active = 0.6;
@@ -149,7 +145,6 @@
         });
     }
 
-    // Canvas manipulation
     function drawLines(p) {
         if(!p.active) return;
         for(var i in p.closest) {
@@ -164,7 +159,6 @@
     function Circle(pos,rad,color) {
         var _this = this;
 
-        // constructor
         (function() {
             _this.pos = pos || null;
             _this.radius = rad || null;
@@ -180,37 +174,7 @@
         };
     }
 
-    // Util
     function getDistance(p1, p2) {
         return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
     }
 })();
-
-// src/assets/js/login.js
-document.addEventListener('DOMContentLoaded', function() {
-    const users = [
-        { username: 'usuario1@ejemplo.com', password: 'clave123' },
-        { username: 'usuario2@ejemplo.com', password: 'clave456' },
-        { username: 'usuario3@ejemplo.com', password: 'clave789' },
-        { username: 'usuario4@ejemplo.com', password: 'clave012' }
-    ];
-
-    const loginForm = document.getElementById('loginForm');
-    
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        
-        const user = users.find(u => u.username === username && u.password === password);
-        
-        if (user) {
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', username);
-            window.location.href = 'home.html';
-        } else {
-            alert('Incorrect username or password');
-        }
-    });
-});

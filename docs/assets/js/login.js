@@ -1,3 +1,4 @@
+// docs/assets/js/login.js
 document.addEventListener('DOMContentLoaded', function() {
     // Usuario y contraseñas definidos
     const users = [
@@ -16,45 +17,31 @@ document.addEventListener('DOMContentLoaded', function() {
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Obtener valores del formulario
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         
-        // Validar que los campos no estén vacíos
         if (!username || !password) {
             errorDiv.textContent = 'Please fill in all fields';
             return;
         }
 
-        // Buscar usuario
         const user = users.find(u => 
             u.username.toLowerCase() === username.toLowerCase() && 
             u.password === password
         );
         
         if (user) {
-            // Limpiar cualquier mensaje de error previo
             errorDiv.textContent = '';
-            
-            // Guardar información de sesión
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', username);
-            
-            // Redirigir a home
             window.location.href = 'home.html';
         } else {
-            // Mostrar mensaje de error
             errorDiv.textContent = 'Incorrect username or password';
-            
-            // Limpiar el campo de contraseña
             document.getElementById('password').value = '';
-            
-            // Prevenir la redirección
             return false;
         }
     });
 
-    // Limpiar mensajes de error cuando el usuario comienza a escribir
     document.getElementById('username').addEventListener('input', function() {
         errorDiv.textContent = '';
     });
