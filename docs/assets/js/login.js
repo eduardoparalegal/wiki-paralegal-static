@@ -2,10 +2,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Usuario y contraseñas definidos
     const users = [
-        { username: 'eduardoparalegal@gmail.com', password: 'clave123' },
-        { username: 'davinaparalegal@gmail.com', password: 'clave456' },
-        { username: 'danielparalegal@gmail.com', password: 'clave789' },
-        { username: 'paralegal@gmail.com', password: 'clave012' }
+        { username: 'eduardoparalegal@gmail.com', password: 'bNviq8nEcc' },
+        { username: 'davinaparalegal@gmail.com', password: 'xUqf85i6ks' },
+        { username: 'danielparalegal@gmail.com', password: 'R9x9HrRTQL' },
+        { username: 'ashleyparalegal@gmail.com', password: 'L4JQw9ExCl' }
     ];
 
     const loginForm = document.getElementById('loginForm');
