@@ -1,0 +1,52 @@
+html, body {
+    margin: 0;
+    font-family: 'Raleway', 'Roboto', Helvetica, sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+.large-header {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: #333;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+    background-image: linear-gradient(135deg, #001160 0%, #0000 100%) !important;
+}
+
+.demo-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.main-title {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    color: #f9f1e9;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 2;
+}
+
+.main-title h1 {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: 2em;
+    font-weight: 400;
+}
+
+.thin {
+    font-weight: 300;
+    margin: 0.5em 0;
+}

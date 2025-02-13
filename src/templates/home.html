@@ -1,0 +1,79 @@
+// Actualización para home.html (public/home.html)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Paralegal - Home</title>
+    <link href="../src/assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="home-container">
+        <nav>
+            <h1>Wiki Paralegal</h1>
+            <button onclick="logout()">Cerrar Sesión</button>
+        </nav>
+        <main>
+            <h2>Bienvenido <span id="userDisplay"></span></h2>
+            <p>Esta es la página de inicio de Wiki Paralegal.</p>
+        </main>
+    </div>
+
+    <script>
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (!isLoggedIn) {
+                window.location.href = '/wiki-paralegal-static/public/index.html';
+                return;
+            }
+            
+            document.getElementById('userDisplay').textContent = currentUser;
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            window.location.href = '/wiki-paralegal-static/public/index.html';
+        }
+
+        window.addEventListener('load', checkAuth);
+    </script>
+</body>
+</html>
+
+// Actualización para index.html (public/index.html)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Paralegal - Ingresar</title>
+    <link href="../src/assets/css/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600" rel="stylesheet">
+</head>
+<body>
+    <div id="large-header" class="large-header">
+        <canvas id="demo-canvas"></canvas>
+        <div class="main-title form-block">
+            <div id="title">
+                <h1>Ingresa a tu cuenta</h1>
+                <p class="thin">Iniciar sesión en Wiki Paralegal</p>
+            </div>
+            <form id="loginForm">
+                <input placeholder="Correo electrónico" name="username" type="text" id="username" class="field"/>
+                <input placeholder="Contraseña" name="password" type="password" id="password" class="field"/>
+                <button type="submit">Ingresar</button>
+            </form>
+            <small class="thin">¿No tienes cuenta? <a href="#">Regístrate</a></small>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenLite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/easing/EasePack.min.js"></script>
+    <script src="../src/assets/js/animation.js"></script>
+    <script src="../src/assets/js/login.js"></script>
+</body>
+</html>
