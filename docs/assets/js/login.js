@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             errorDiv.textContent = '';
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', username);
-            window.location.href = 'home.html';
+            window.location.href = 'templates/home.html'; // Ruta corregida
         } else {
             errorDiv.textContent = 'Incorrect username or password';
             document.getElementById('password').value = '';
