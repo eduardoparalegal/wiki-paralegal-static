@@ -1,4 +1,3 @@
-/* WIKI-PARALEGAL-STATIC/docs/assets/css/home.css */
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 * {
@@ -15,205 +14,226 @@ body {
 .dashboard-container {
     display: flex;
     min-height: 100vh;
+    padding-top: 30px;
 }
 
-/* Estilos del Menú Lateral */
+/* Sidebar Menu */
 #accordian {
-    background: #000 ;
+    background: #0c1220;
     width: 250px;
-    padding: 10px;
+    padding: 30px 0;
     height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    padding-right: 0px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
 }
 
 .main-navbar {
-    position: relative;
+    padding: 0;
+    margin: 0;
 }
 
 #accordian li {
     list-style-type: none;
+    position: relative;
 }
 
 #accordian ul li a {
-    color: rgba(255,255,255,0.9);
+    color: rgba(255,255,255,0.7);
     text-decoration: none;
     font-size: 15px;
     line-height: 45px;
     display: block;
-    padding: 0px 20px;
-    transition-duration: 0.6s;
-    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    position: relative;
+    padding: 0 30px;
+    transition: all 0.3s ease;
 }
 
 #accordian ul li a i {
     margin-right: 10px;
+    color: #6366f1;
+    width: 20px;
+    text-align: center;
 }
 
 #accordian > ul > li.active > a {
-    color: #fff ;
-    background-color: transparent;
-    transition: all 0.7s;
+    color: #fff;
+    background: rgba(99, 102, 241, 0.1);
 }
 
-/* Selector activo del menú */
-.selector-active {
-    width: 100%;
-    display: inline-block;
-    position: absolute;
-    height: 37px;
-    top: 0px;
-    left: 0px;
-    transition-duration: 0.6s;
-    transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    background-color: #5161ce;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
+#accordian ul li a:hover {
+    color: #fff;
+    background: rgba(99, 102, 241, 0.05);
 }
 
-.selector-active .top,
-.selector-active .bottom {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #5161ce;
-    right: 0;
-}
-
-.selector-active .top {
-    top: -25px;
-}
-
-.selector-active .bottom {
-    bottom: -25px;
-}
-
-.selector-active .top:before,
-.selector-active .bottom:before {
-    content: '';
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #000 ;
-}
-
-.selector-active .top:before {
-    left: -25px;
-    top: -25px;
-}
-
-.selector-active .bottom:before {
-    bottom: -25px;
-    left: -25px;
-}
-
-/* Contenido Principal */
+/* Main Content */
 .main-content {
     flex: 1;
-    padding: 30px;
-    background: #000;
+    margin-left: 250px;
+    padding: 60px;
 }
 
 .content {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Sección de Bienvenida */
+/* Welcome Section */
 .welcome-section {
-    margin-bottom: 40px;
-    padding: 30px;
-    background: transparent;
-    color: #000;
+    margin-bottom: 100px;
+    width: 100%;
 }
 
 .welcome-section h1 {
     font-size: 2.5em;
+    color: #fff;
     margin-bottom: 10px;
-    color: white;
+    font-weight: 500;
 }
 
 .welcome-section p {
-    color: #ffff ;
+    color: rgba(255,255,255,0.7);
     font-size: 1.1em;
-    margin-bottom: 20px;
 }
 
-/* Nueva cuadrícula de dashboard */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-}
-
-.dashboard-card {
-    background: #000;
-    border-radius: 10px;
-    padding: 30px 20px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    border: 2px solid #fff; /* Color morado apagado */
-}
-
-
-.dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
-.card-icon {
-    font-size: 2.5em;
-    color: #5161ce;
-    margin-bottom: 20px;
-}
-
-.dashboard-card h3 {
-    color: #fff;
-    margin-bottom: 15px;
-    font-size: 1.3em;
-}
-
-.dashboard-card p {
-    color: #666;
-    font-size: 0.95em;
-    line-height: 1.5;
-}
-
-/* Mensaje de Bienvenida */
 #welcome-message {
-    color: #C5C8E6 ;
+    color: rgba(255,255,255,0.9);
     font-size: 1.8em;
     margin-top: 20px;
     font-weight: 300;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
-    }
+/* Mail-out Card - Repositioned */
+.library-card {
+    position: absolute;
+    top: -30px;
+    left: 60%;
+    transform: translateX(-50%); /* This transform stays constant */
+    width: 500px;
+    height: 180px;
+    background: #0c1220;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    z-index: 10;
+    /* Removed transition property */
+}
 
+
+.library-card .card-icon {
+    color: #6366f1;
+    margin-bottom: 15px;
+}
+
+.library-card p {
+    color: rgba(255,255,255,0.6);
+}
+
+.library-card p {
+    color: rgba(255,255,255,0.6);
+}
+
+.library-card:hover {
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.dashboard-card {
+    background: #0c1220;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 12px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.4);
+}
+
+.card-icon {
+    font-size: 2.5em;
+    color: #6366f1;
+    margin-bottom: 25px;
+}
+
+.dashboard-card h3 {
+    color: #fff;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.dashboard-card p {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .library-card {
+        position: static;
+        width: 100%;
+        margin-bottom: 40px;
+        
+    
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
     #accordian {
         width: 100%;
         height: auto;
-        min-height: auto;
-        padding-bottom: 20px;
+        position: relative;
+        padding: 15px;
     }
 
     .main-content {
+        margin-left: 0;
         padding: 20px;
     }
 
     .dashboard-grid {
         grid-template-columns: 1fr;
+        gap: 25px;
     }
 
-    .welcome-section {
-        padding: 20px;
+    .dashboard-card {
+        height: auto;
+        min-height: 220px;
     }
+
+    .library-card {
+        height: auto;
+        min-height: 180px;
+    }
+}
 }

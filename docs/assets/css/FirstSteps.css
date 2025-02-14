@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #0c1220;
+    color: #fff;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.flow-chart {
+    padding: 2rem;
+    position: relative;
+}
+
+/* Connecting Lines */
+.flow-chart::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 2px;
+    background: rgba(99, 102, 241, 0.3);
+    transform: translateX(-50%);
+}
+
+.step-container {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.step {
+    background: #1a2234;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 250px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.step:hover {
+    transform: translateY(-5px);
+    border-color: rgba(99, 102, 241, 0.6);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+}
+
+.step i {
+    font-size: 2rem;
+    color: #6366f1;
+    margin-bottom: 1rem;
+}
+
+.step h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Specific path levels */
+.paths-level-1, .paths-level-2, .paths-level-4 {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.paths-level-1::before,
+.paths-level-2::before,
+.paths-level-4::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: rgba(99, 102, 241, 0.3);
+}
+
+/* Status colors */
+.step.good {
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.step.good:hover {
+    border-color: rgba(34, 197, 94, 0.6);
+    box-shadow: 0 5px 15px rgba(34, 197, 94, 0.2);
+}
+
+.step.good i {
+    color: #22c55e;
+}
+
+.step.bad {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.step.bad:hover {
+    border-color: rgba(239, 68, 68, 0.6);
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+}
+
+.step.bad i {
+    color: #ef4444;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .paths-level-1, .paths-level-2, .paths-level-4 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .paths-level-1::before,
+    .paths-level-2::before,
+    .paths-level-4::before {
+        display: none;
+    }
+
+    .step-container {
+        margin: 1rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .step {
+        width: 200px;
+        padding: 1rem;
+    }
+
+    .step h3 {
+        font-size: 0.9rem;
+    }
+}
