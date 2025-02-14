@@ -31,17 +31,22 @@ body {
     width: 2px;
     background: linear-gradient(180deg, #3dc2c3, #4d48d5, #d53db6, #d5b23d);
     transform: translateX(-50%);
+    z-index: 0;  /* Asegura que la línea esté detrás de los elementos */
 }
 
 .step-container {
     margin: 2rem 0;
     display: flex;
     justify-content: center;
+    position: relative;
+    z-index: 1;  /* Coloca los contenedores por encima de las líneas */
 }
 
 .step-link {
     text-decoration: none;
     color: inherit;
+    position: relative;
+    z-index: 2;  /* Asegura que los enlaces estén por encima */
 }
 
 .step {
@@ -54,17 +59,19 @@ body {
     transition: all 0.3s ease;
     position: relative;
     cursor: pointer;
+    z-index: 2;  /* Asegura que los pasos estén por encima */
 }
 
 /* Estilos específicos para cada nivel usando las combinaciones de colores */
 .paths-level-1 .step {
-    border-color: rgba(61, 194, 195, 0.3); /* Combinación 1 */
+    border-color: rgba(61, 194, 195, 0.3);
+    background: #1a2234;  /* Asegura un fondo sólido */
 }
 
 .paths-level-1 .step:hover {
     border-color: #3dc2c3;
     box-shadow: 0 5px 15px rgba(61, 194, 195, 0.3);
-    background: linear-gradient(135deg, rgba(61, 194, 195, 0.1), rgba(61, 210, 104, 0.1));
+    background: linear-gradient(135deg, #1a2234, #1e2638);  /* Gradiente más sutil */
 }
 
 .paths-level-1 .step i {
@@ -74,13 +81,14 @@ body {
 }
 
 .paths-level-2 .step {
-    border-color: rgba(77, 72, 213, 0.3); /* Combinación 2 */
+    border-color: rgba(77, 72, 213, 0.3);
+    background: #1a2234;
 }
 
 .paths-level-2 .step:hover {
     border-color: #4d48d5;
     box-shadow: 0 5px 15px rgba(77, 72, 213, 0.3);
-    background: linear-gradient(135deg, rgba(77, 72, 213, 0.1), rgba(63, 164, 213, 0.1));
+    background: linear-gradient(135deg, #1a2234, #1e2638);
 }
 
 .paths-level-2 .step i {
@@ -90,13 +98,14 @@ body {
 }
 
 .paths-level-3 .step {
-    border-color: rgba(213, 61, 182, 0.3); /* Combinación 3 */
+    border-color: rgba(213, 61, 182, 0.3);
+    background: #1a2234;
 }
 
 .paths-level-3 .step:hover {
     border-color: #d53db6;
     box-shadow: 0 5px 15px rgba(213, 61, 182, 0.3);
-    background: linear-gradient(135deg, rgba(213, 61, 182, 0.1), rgba(213, 61, 125, 0.1));
+    background: linear-gradient(135deg, #1a2234, #1e2638);
 }
 
 .paths-level-3 .step i {
@@ -106,13 +115,14 @@ body {
 }
 
 .paths-level-4 .step {
-    border-color: rgba(213, 178, 61, 0.3); /* Combinación 4 */
+    border-color: rgba(213, 178, 61, 0.3);
+    background: #1a2234;
 }
 
 .paths-level-4 .step:hover {
     border-color: #d5b23d;
     box-shadow: 0 5px 15px rgba(213, 178, 61, 0.3);
-    background: linear-gradient(135deg, rgba(213, 178, 61, 0.1), rgba(213, 120, 61, 0.1));
+    background: linear-gradient(135deg, #1a2234, #1e2638);
 }
 
 .paths-level-4 .step i {
@@ -122,13 +132,14 @@ body {
 }
 
 .paths-level-5 .step {
-    border-color: rgba(61, 194, 195, 0.3); /* Volvemos a la combinación 1 */
+    border-color: rgba(61, 194, 195, 0.3);
+    background: #1a2234;
 }
 
 .paths-level-5 .step:hover {
     border-color: #3dc2c3;
     box-shadow: 0 5px 15px rgba(61, 194, 195, 0.3);
-    background: linear-gradient(135deg, rgba(61, 194, 195, 0.1), rgba(61, 203, 146, 0.1));
+    background: linear-gradient(135deg, #1a2234, #1e2638);
 }
 
 .paths-level-5 .step i {
@@ -164,6 +175,7 @@ body {
         rgba(213, 61, 182, 0.3), 
         rgba(213, 178, 61, 0.3)
     );
+    z-index: 0;  /* Coloca las líneas de conexión detrás */
 }
 
 /* Efecto de brillo en hover */
@@ -178,6 +190,7 @@ body {
     opacity: 0;
     transition: opacity 0.3s ease;
     border-radius: 12px;
+    z-index: 3;  /* Coloca el efecto de brillo por encima */
 }
 
 .step:hover::after {
