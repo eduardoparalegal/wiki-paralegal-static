@@ -1,5 +1,9 @@
 // WIKI-PARALEGAL-STATIC/docs/assets/js/home.js
 $(document).ready(function() {
+    // Configuración del nombre del usuario
+    const userName = "Usuario"; // Esto podría venir de una variable de sesión
+    $("#user-name").text(userName);
+
     // Inicialización del selector activo
     var tabsVerticalInner = $('#accordian');
     var activeItemVerticalInner = tabsVerticalInner.find('.active');
