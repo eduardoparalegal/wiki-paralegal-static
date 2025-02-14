@@ -22,7 +22,6 @@ body {
     position: relative;
 }
 
-/* Connecting Lines */
 .flow-chart::before {
     content: '';
     position: absolute;
@@ -30,7 +29,7 @@ body {
     left: 50%;
     height: 100%;
     width: 2px;
-    background: rgba(99, 102, 241, 0.3);
+    background: rgba(61, 190, 213, 0.3); /* Color azul de tu home */
     transform: translateX(-50%);
 }
 
@@ -40,9 +39,14 @@ body {
     justify-content: center;
 }
 
+.step-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .step {
     background: #1a2234;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    border: 1px solid rgba(61, 190, 213, 0.3); /* Color azul de tu home */
     border-radius: 12px;
     padding: 1.5rem;
     width: 250px;
@@ -54,13 +58,20 @@ body {
 
 .step:hover {
     transform: translateY(-5px);
-    border-color: rgba(99, 102, 241, 0.6);
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+    border-color: rgba(61, 213, 90, 0.6); /* Color verde de tu home */
+    box-shadow: 0 5px 15px rgba(61, 190, 213, 0.2);
+    background: linear-gradient(
+        135deg,
+        rgba(61, 190, 213, 0.1),
+        rgba(61, 213, 90, 0.1)
+    );
 }
 
 .step i {
     font-size: 2rem;
-    color: #6366f1;
+    background: linear-gradient(45deg, #3dbed5, #3dd55a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 1rem;
 }
 
@@ -70,7 +81,6 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Specific path levels */
 .paths-level-1, .paths-level-2, .paths-level-4 {
     display: flex;
     justify-content: space-around;
@@ -86,37 +96,57 @@ body {
     left: 20%;
     right: 20%;
     height: 2px;
-    background: rgba(99, 102, 241, 0.3);
+    background: linear-gradient(
+        to right,
+        rgba(61, 190, 213, 0.3),
+        rgba(61, 213, 90, 0.3)
+    );
 }
 
-/* Status colors */
-.step.good {
-    border-color: rgba(34, 197, 94, 0.3);
+/* Estilos específicos para cada nivel */
+.paths-level-1 .step:hover {
+    border-color: #3dbed5;
 }
 
-.step.good:hover {
-    border-color: rgba(34, 197, 94, 0.6);
-    box-shadow: 0 5px 15px rgba(34, 197, 94, 0.2);
+.paths-level-2 .step:hover {
+    border-color: #3dd55a;
 }
 
-.step.good i {
-    color: #22c55e;
+.paths-level-3 .step:hover {
+    border-color: #ff6b6b; /* Color rojo/naranja para variación */
 }
 
-.step.bad {
-    border-color: rgba(239, 68, 68, 0.3);
+.paths-level-4 .step:hover {
+    border-color: #ffd93d; /* Color amarillo/naranja para variación */
 }
 
-.step.bad:hover {
-    border-color: rgba(239, 68, 68, 0.6);
-    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.2);
+.paths-level-5 .step:hover {
+    border-color: #6c5ce7; /* Color púrpura para variación */
 }
 
-.step.bad i {
-    color: #ef4444;
+/* Efecto de brillo en el hover */
+.step::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(61, 190, 213, 0.1),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 12px;
 }
 
-/* Responsive Design */
+.step:hover::after {
+    opacity: 1;
+}
+
 @media (max-width: 1200px) {
     .paths-level-1, .paths-level-2, .paths-level-4 {
         flex-direction: column;
@@ -143,4 +173,29 @@ body {
     .step h3 {
         font-size: 0.9rem;
     }
+}
+
+/* Animación suave para los elementos al cargar */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-container {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.step-container:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.step-container:nth-child(3) {
+    animation-delay: 0.4s;
 }
