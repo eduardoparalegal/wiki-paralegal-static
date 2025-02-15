@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esquema de Pagos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/payments.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
+
+</head>
+<body>
+    <div class="container">
+        <div class="flow-chart">
+            <!-- Nivel 1: Inicio -->
+            <div class="paths-level-1 visible">
+                <div class="step-container">
+                    <div class="step" data-level="2">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Payments</h3>
+                        <button class="more-btn" data-title="Payments" 
+                                data-image="https://i.postimg.cc/YSzHNmzj/476749779-580760634955776-3771454223308132670-n.png"
+                                data-description="Starting point to evaluate if the client is outstanding on his payments and work his case.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 2: Opciones de Payments -->
+            <div class="paths-level-2">
+                <div class="step-container">
+                    <div class="step final-step good">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Paid in last 2 months</h3>
+                        <p class="status-message">Good continues <i class="fas fa-thumbs-up"></i></p>
+                        <button class="more-btn" data-title="Paid in last 2 months" 
+                                data-image="https://i.postimg.cc/L5yn6bbk/qaswedrftghyuj.png"
+                                data-description="The client has made payments in the last 2 months. This is a good indicator that the customer is current with payments.">
+                            More
+                        </button>
+                    </div>
+                    <div class="step" data-level="3-2">
+                        <i class="fas fa-times-circle"></i>
+                        <h3>No payments in 3+ months</h3>
+                        <button class="more-btn" data-title="No payments in 3+ months" 
+                                data-image="https://i.postimg.cc/L56L4fNP/0okijuhygtfrde.png"
+                                data-description="The customer has not made payments in the last 3 months or more. This requires additional verification.">
+                            More
+                        </button>
+                    </div>
+                    <div class="step" data-level="3-3">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>No Box folder</h3>
+                        <button class="more-btn" data-title="No Box folder" 
+                                data-image="https://i.postimg.cc/v8zCPsn2/qwsdcfghbnh.png"
+                                data-description="No folder is found in Box for this client. Please check with Nadia/Elmer">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 3-2: No payments in 3+ months -->
+            <div class="paths-level-3-2">
+                <div class="step-container">
+                    <div class="step final-step good">
+                        <i class="fas fa-file-signature"></i>
+                        <h3>Carta Finiquito</h3>
+                        <p class="status-message">Good continues <i class="fas fa-thumbs-up"></i></p>
+                        <button class="more-btn" data-title="Carta Finiquito" 
+                                data-image="https://i.postimg.cc/mkrDcWJX/finiquito.png"
+                                data-description="A letter of termination has been issued for this customer. This document confirms that the customer has finished paying.">
+                            More
+                        </button>
+                    </div>
+                    <div class="step" data-level="4-2">
+                        <i class="fas fa-file-alt"></i>
+                        <h3>No Carta Finiquito</h3>
+                        <button class="more-btn" data-title="No Carta Finiquito" 
+                                data-image="https://i.postimg.cc/nLCfQchQ/no-1.jpg"
+                                data-description="A termination letter has not been issued. You should proceed to check with Perla or Jose to determine next steps.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 3-3: No Box folder -->
+            <div class="paths-level-3-3">
+                <div class="step-container">
+                    <div class="step" data-level="4-3">
+                        <i class="fas fa-comment"></i>
+                        <h3>Message Nadia to check</h3>
+                        <button class="more-btn" data-title="Message Nadia to check" 
+                                data-image="https://i.postimg.cc/kGKFD8SX/xcvbhgytrfvg.png"
+                                data-description="It is necessary to send a message to Nadia/Elmer to verify the client's situation and obtain more information about their status.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 4-2: No Carta Finiquito -->
+            <div class="paths-level-4-2">
+                <div class="step-container">
+                    <div class="step" data-level="5-1">
+                        <i class="fas fa-user-check"></i>
+                        <h3>Check with Perla or Jose</h3>
+                        <button class="more-btn" data-title="Check with Perla or Jose" 
+                                data-image="https://i.postimg.cc/rF8brFhF/perra.png"
+                                data-description="Perla or Jose should be consulted to determine the client's current status and next steps.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 4-3: Message Nadia to check -->
+            <div class="paths-level-4-3">
+                <div class="step-container">
+                    <div class="step" data-level="5-2">
+                        <i class="fas fa-user-times"></i>
+                        <h3>Not our client</h3>
+                        <button class="more-btn" data-title="Not our client" 
+                                data-image="https://i.postimg.cc/qqyS0NM2/mensaje.png"
+                                data-description="It has been verified that you are not our customer. Must be notified for MTW.">
+                            More
+                        </button>
+                    </div>
+                    <div class="step" data-level="5-3">
+                        <i class="fas fa-user"></i>
+                        <h3>Our client</h3>
+                        <button class="more-btn" data-title="Our client" 
+                                data-image="https://i.postimg.cc/pVSLL4VT/si-es-cliente.png"
+                                data-description="It has been confirmed that you are our customer. The last payments made must be verified.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 5-1: Check with Perla or Jose -->
+            <div class="paths-level-5-1">
+                <div class="step-container">
+                    <div class="step" data-level="6-1">
+                        <i class="fas fa-thumbs-down"></i>
+                        <h3>Bad</h3>
+                        <button class="more-btn" data-title="Bad" 
+                                data-image="https://i.postimg.cc/Dfcpn32V/perra-estupida-1.png"
+                                data-description="The verification was negative. MTW must be notified and the corresponding protocol must be followed.">
+                            More
+                        </button>
+                    </div>
+                    <div class="step final-step good">
+                        <i class="fas fa-thumbs-up"></i>
+                        <h3>Good</h3>
+                        <p class="status-message">Good continues <i class="fas fa-thumbs-up"></i></p>
+                        <button class="more-btn" data-title="Good" 
+                                data-image="https://i.postimg.cc/SQVdHLrk/perra-medio-perra-1.png"
+                                data-description="Verification has been positive. The client is in good condition and no further action is required.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 5-2: Not our client -->
+            <div class="paths-level-5-2">
+                <div class="step-container">
+                    <div class="step final-step bad">
+                        <i class="fas fa-envelope"></i>
+                        <h3>MTW (message Nhat)</h3>
+                        <p class="status-message">Bad <i class="fas fa-thumbs-down"></i></p>
+                        <button class="more-btn" data-title="MTW (message Nhat)" 
+                                data-image="https://i.postimg.cc/vmd54Dz0/nhat.png"
+                                data-description="A message must be sent to Nhat at MTW to inform that the client does not belong to our client list.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 5-3: Our client -->
+            <div class="paths-level-5-3">
+                <div class="step-container">
+                    <div class="step final-step good">
+                        <i class="fas fa-sync"></i>
+                        <h3>Repeat Payment steps to see when last payments were</h3>
+                        <p class="status-message">Good continues <i class="fas fa-thumbs-up"></i></p>
+                        <button class="more-btn" data-title="Repeat Payment steps" 
+                                data-description="It is necessary to review the payment steps again to determine when the last payments were made and to assess the customer's current situation.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel 6-1: Bad -->
+            <div class="paths-level-6-1">
+                <div class="step-container">
+                    <div class="step final-step bad">
+                        <i class="fas fa-file-export"></i>
+                        <h3>MTW (notify Perla for MTW letter & Joseph)</h3>
+                        <p class="status-message">Bad <i class="fas fa-thumbs-down"></i></p>
+                        <button class="more-btn" data-title="MTW notification" 
+                                data-image="https://i.postimg.cc/63cVJwCY/termination-letter-1.png"
+                                data-description="Perla should be notified to prepare the MTW letter and also inform Joseph of the client's current situation.">
+                            More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div class="modal-body">
+                <img id="modal-image" alt="Información detallada">
+                <p id="modal-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/payments.js"></script>
+</body>
+</html>
