@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Documentation Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/documentation.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
+
+</head>
+<body>
+    <div class="particles-container" id="particles-js"></div>
+    <div class="container">
+        <main class="documentation">
+            <header class="doc-header">
+                <div class="header-content">
+                    <h1 class="main-title">Steps to create covers</h1>
+                    <p class="header-subtitle">A complete guide to the creation of cover pages for documentation.</p>
+                </div>
+            </header>
+            
+            <div class="doc-grid">
+                <section class="doc-section">
+                    <div class="section-header">
+                        <span class="section-icon">
+                            <i class="fa-solid fa-1"></i>
+                        </span>
+                        <h2 class="section-title">Identify the documents to work with</h2>
+                    </div>
+                    <div class="content-block">
+                        <p class="section-text">
+                            Begin by ensuring all prerequisites are installed and configured properly. 
+                            This includes setting up your development environment and required dependencies.
+                        </p>
+                        <div class="image-container">
+                            <img src="/api/placeholder/800/400" alt="Initial Setup Diagram">
+                            <div class="image-overlay">
+                                <span class="overlay-text">Setup Process</span>
+                            </div>
+                        </div>
+                        <div class="code-box">
+                            <div class="code-header">
+                                <span class="code-title">Installation Commands</span>
+                                <button class="copy-button" data-tooltip="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code>npm install required-dependencies
+npm run setup-environment</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="doc-section">
+                    <div class="section-header">
+                        <span class="section-icon">
+                            <i class="fas fa-cogs"></i>
+                        </span>
+                        <h2 class="section-title">Configuration</h2>
+                    </div>
+                    <div class="content-block">
+                        <p class="section-text">
+                            Configure your application settings according to your environment needs.
+                            Make sure to follow security best practices when setting up credentials.
+                        </p>
+                        <div class="image-container">
+                            <img src="/api/placeholder/800/400" alt="Configuration Diagram">
+                            <div class="image-overlay">
+                                <span class="overlay-text">Configuration Process</span>
+                            </div>
+                        </div>
+                        <div class="code-box">
+                            <div class="code-header">
+                                <span class="code-title">Configuration Object</span>
+                                <button class="copy-button" data-tooltip="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code>const config = {
+    apiKey: process.env.API_KEY,
+    environment: 'production',
+    debug: false
+};</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="doc-section">
+                    <div class="section-header">
+                        <span class="section-icon">
+                            <i class="fas fa-code"></i>
+                        </span>
+                        <h2 class="section-title">Development</h2>
+                    </div>
+                    <div class="content-block">
+                        <p class="section-text">
+                            Follow these development guidelines to ensure consistency across the project.
+                            Make sure to implement proper error handling and logging.
+                        </p>
+                        <div class="image-container">
+                            <img src="/api/placeholder/800/400" alt="Development Process Diagram">
+                            <div class="image-overlay">
+                                <span class="overlay-text">Development Workflow</span>
+                            </div>
+                        </div>
+                        <div class="code-box">
+                            <div class="code-header">
+                                <span class="code-title">Error Handling</span>
+                                <button class="copy-button" data-tooltip="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code>try {
+    await processData();
+    logger.info('Data processed successfully');
+} catch (error) {
+    logger.error('Error processing data:', error);
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="doc-section">
+                    <div class="section-header">
+                        <span class="section-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </span>
+                        <h2 class="section-title">Deployment</h2>
+                    </div>
+                    <div class="content-block">
+                        <p class="section-text">
+                            Follow these steps to deploy your application to production.
+                            Ensure all security checks and tests have passed before proceeding.
+                        </p>
+                        <div class="image-container">
+                            <img src="/api/placeholder/800/400" alt="Deployment Diagram">
+                            <div class="image-overlay">
+                                <span class="overlay-text">Deployment Pipeline</span>
+                            </div>
+                        </div>
+                        <div class="code-box">
+                            <div class="code-header">
+                                <span class="code-title">Deployment Commands</span>
+                                <button class="copy-button" data-tooltip="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code>git checkout main
+npm run build
+npm run deploy-production</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                
+            </div>
+        </main>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="../assets/js/documentation.js"></script>
+</body>
+</html>
