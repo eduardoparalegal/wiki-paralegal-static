@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paralegal Notes</title>
+    <link rel="stylesheet" href="../assets/css/Paralegal_Notes.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="navigation">
+            <button class="nav-btn active" data-section="create">
+                <i class="fas fa-plus-circle"></i> Create
+            </button>
+            <button class="nav-btn" data-section="search">
+                <i class="fas fa-search"></i> Search
+            </button>
+            <button class="nav-btn" data-section="modify">
+                <i class="fas fa-edit"></i> Modify
+            </button>
+        </nav>
+
+        <!-- Create Section -->
+        <section id="create" class="section active">
+            <div class="card">
+                <h2>Create New Client Record</h2>
+                <form id="createForm">
+                    <div class="form-group">
+                        <label for="createName">Name:</label>
+                        <input type="text" id="createName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createANumber">A#:</label>
+                        <input type="text" id="createANumber" placeholder="###-###-###" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="createNote">Note:</label>
+                        <textarea id="createNote" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Save</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section id="search" class="section">
+            <div class="card">
+                <h2>Search Client Record</h2>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="searchANumber">A#:</label>
+                        <input type="text" id="searchANumber" placeholder="###-###-###" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Search</button>
+                </form>
+                <div id="searchResult" class="result-container"></div>
+            </div>
+        </section>
+
+        <!-- Modify Section -->
+        <section id="modify" class="section">
+            <div class="card">
+                <h2>Modify Client Record</h2>
+                <form id="modifySearchForm">
+                    <div class="form-group">
+                        <label for="modifyANumber">A#:</label>
+                        <input type="text" id="modifyANumber" placeholder="###-###-###" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Search</button>
+                </form>
+                <form id="modifyForm" class="hidden">
+                    <div class="form-group">
+                        <label for="modifyName">Name:</label>
+                        <input type="text" id="modifyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modifyNote">Note:</label>
+                        <textarea id="modifyNote" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Update</button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <script src="../assets/js/Paralegal_Notes.js"></script>
+</body>
+</html>

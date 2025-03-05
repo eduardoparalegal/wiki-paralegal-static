@@ -1,33 +1,55 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const steps = document.querySelectorAll('.step');
-    
-    steps.forEach(step => {
-        step.addEventListener('mouseenter', function() {
-            highlightConnectedSteps(step);
+// Esperar a que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtener elementos del DOM
+    const sidebar = document.getElementById('sidebar');
+    const logoToggle = document.getElementById('logo-toggle');
+    const submenus = document.querySelectorAll('.has-submenu');
+
+    // Función para alternar la visibilidad del sidebar
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+    }
+
+    // Evento de clic en el logo para contraer/expandir sidebar
+    logoToggle.addEventListener('click', toggleSidebar);
+
+    // Función para manejar submenús
+    function handleSubmenuToggle(event) {
+        // Prevenir comportamiento por defecto del enlace
+        event.preventDefault();
+
+        // Obtener el elemento padre del submenú
+        const submenuItem = event.currentTarget.closest('.has-submenu');
+
+        // Cerrar todos los demás submenús
+        submenus.forEach(menu => {
+            if (menu !== submenuItem) {
+                menu.classList.remove('open');
+            }
         });
-        
-        step.addEventListener('mouseleave', function() {
-            removeAllHighlights();
-        });
+
+        // Alternar el submenú actual
+        submenuItem.classList.toggle('open');
+    }
+
+    // Agregar eventos de clic a los elementos con submenú
+    submenus.forEach(submenuItem => {
+        const submenuLink = submenuItem.querySelector('a');
+        submenuLink.addEventListener('click', handleSubmenuToggle);
     });
-    
-    function highlightConnectedSteps(step) {
-        const container = step.closest('.step-container');
-        const level = container.parentElement;
-        
-        const nextLevel = level.nextElementSibling;
-        if (nextLevel) {
-            nextLevel.querySelectorAll('.step').forEach(nextStep => {
-                nextStep.style.borderColor = 'rgba(99, 102, 241, 0.6)';
-                nextStep.style.boxShadow = '0 5px 15px rgba(99, 102, 241, 0.2)';
-            });
+
+    // Función para actualizar fecha y hora
+    function updateDateTime() {
+        const dateTimeElement = document.getElementById('current-datetime');
+        if (dateTimeElement) {
+            const now = new Date();
+            dateTimeElement.textContent = now.toLocaleString();
         }
     }
+
+    // Actualizar fecha y hora cada segundo
+    setInterval(updateDateTime, 1000);
     
-    function removeAllHighlights() {
-        steps.forEach(step => {
-            step.style.borderColor = 'rgba(99, 102, 241, 0.3)';
-            step.style.boxShadow = 'none';
-        });
-    }
+    // Llamada inicial para mostrar fecha y hora
+    updateDateTime();
 });

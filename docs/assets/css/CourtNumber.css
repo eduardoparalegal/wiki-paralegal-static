@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #121212;
+    color: #fff;
+    min-height: 100vh;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #1f1f1f;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.search-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+#searchInput {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.75rem;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #808080;
+    box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+#courtsTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #1f1f1f;
+}
+
+#courtsTable thead {
+    background: #2a2a2a;
+}
+
+#courtsTable th, #courtsTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #404040;
+    color: rgba(255,255,255,0.8);
+}
+
+#courtsTable th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+#courtsTable tr:hover {
+    background: #2a2a2a;
+    transition: all 0.3s ease;
+}
+
+.call-btn {
+    background: #404040;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.call-btn:hover {
+    background: #000;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    #courtsTable th, #courtsTable td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
