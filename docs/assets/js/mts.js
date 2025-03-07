@@ -1,5 +1,27 @@
 // Variable para almacenar el índice del cliente que se está editando/eliminando
 let currentClientIndex = null;
+let db; // Variable global para la base de datos Firestore
+let firestore = {}; // Para almacenar las funciones de Firestore
+
+// Inicializa Firebase y configura Firestore
+function initializeFirebase() {
+    // La configuración ya debería estar en el HTML, solo necesitamos obtener la instancia de Firestore
+    import('https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js')
+        .then((firestoreModule) => {
+            // Guardar referencias globales a las funciones necesarias
+            firestore = firestoreModule;
+            const { getFirestore } = firestoreModule;
+            db = getFirestore();
+            console.log("Firebase Firestore initialized");
+            loadClients(); // Cargar clientes después de inicializar Firestore
+        })
+        .catch(error => {
+            console.error("Error loading Firestore:", error);
+            showMessage('message', 'Error connecting to database. Using local storage temporarily.', true);
+            // Fallback a localStorage si Firestore no está disponible
+            loadClients();
+        });
+}
 
 // Función para cambiar entre pestañas
 document.querySelectorAll('.tab').forEach(tab => {
@@ -83,27 +105,6 @@ function showMessage(elementId, message, isError = false) {
     }, 3000);
 }
 
-// Funciones para localStorage
-function getClients() {
-    try {
-        const clientsJSON = localStorage.getItem('mtsClients');
-        return clientsJSON ? JSON.parse(clientsJSON) : [];
-    } catch (error) {
-        console.error("Error reading from localStorage:", error);
-        return [];
-    }
-}
-
-function saveClients(clients) {
-    try {
-        localStorage.setItem('mtsClients', JSON.stringify(clients));
-        return true;
-    } catch (error) {
-        console.error("Error saving to localStorage:", error);
-        return false;
-    }
-}
-
 // Formatear fecha
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -116,92 +117,189 @@ function formatDate(dateString) {
     });
 }
 
+// Funciones de Firebase para CRUD
+async function getClients() {
+    if (!db) {
+        // Fallback a localStorage si Firestore no está disponible
+        try {
+            const clientsJSON = localStorage.getItem('mtsClients');
+            return clientsJSON ? JSON.parse(clientsJSON) : [];
+        } catch (error) {
+            console.error("Error reading from localStorage:", error);
+            return [];
+        }
+    }
+
+    try {
+        const { collection, getDocs, query, orderBy } = firestore;
+        const clientsRef = collection(db, 'clients');
+        const q = query(clientsRef, orderBy('dateAdded', 'desc'));
+        const querySnapshot = await getDocs(q);
+        
+        const clients = [];
+        querySnapshot.forEach((doc) => {
+            clients.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        return clients;
+    } catch (error) {
+        console.error("Error getting documents from Firestore:", error);
+        return [];
+    }
+}
+
+async function addClient(client) {
+    if (!db) {
+        // Fallback a localStorage si Firestore no está disponible
+        try {
+            const clients = JSON.parse(localStorage.getItem('mtsClients') || '[]');
+            clients.push(client);
+            localStorage.setItem('mtsClients', JSON.stringify(clients));
+            return true;
+        } catch (error) {
+            console.error("Error saving to localStorage:", error);
+            return false;
+        }
+    }
+
+    try {
+        const { collection, addDoc } = firestore;
+        const clientsRef = collection(db, 'clients');
+        await addDoc(clientsRef, client);
+        return true;
+    } catch (error) {
+        console.error("Error adding document to Firestore:", error);
+        return false;
+    }
+}
+
+async function updateClient(id, updatedClient) {
+    if (!db) {
+        // Fallback a localStorage si Firestore no está disponible
+        try {
+            const clients = JSON.parse(localStorage.getItem('mtsClients') || '[]');
+            const index = clients.findIndex((client, idx) => idx === id);
+            
+            if (index >= 0) {
+                clients[index] = updatedClient;
+                localStorage.setItem('mtsClients', JSON.stringify(clients));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error("Error updating in localStorage:", error);
+            return false;
+        }
+    }
+
+    try {
+        const { doc, updateDoc } = firestore;
+        const clientRef = doc(db, 'clients', id);
+        await updateDoc(clientRef, updatedClient);
+        return true;
+    } catch (error) {
+        console.error("Error updating document in Firestore:", error);
+        return false;
+    }
+}
+
+async function deleteClient(id) {
+    if (!db) {
+        // Fallback a localStorage si Firestore no está disponible
+        try {
+            const clients = JSON.parse(localStorage.getItem('mtsClients') || '[]');
+            const newClients = clients.filter((client, idx) => idx !== id);
+            localStorage.setItem('mtsClients', JSON.stringify(newClients));
+            return true;
+        } catch (error) {
+            console.error("Error deleting from localStorage:", error);
+            return false;
+        }
+    }
+
+    try {
+        const { doc, deleteDoc } = firestore;
+        const clientRef = doc(db, 'clients', id);
+        await deleteDoc(clientRef);
+        return true;
+    } catch (error) {
+        console.error("Error deleting document from Firestore:", error);
+        return false;
+    }
+}
+
 // Cargar clientes en la tabla
-function loadClients() {
+async function loadClients() {
     const clientsTableBody = document.getElementById('clientsTableBody');
-    clientsTableBody.innerHTML = '';
+    clientsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Loading clients...</td></tr>';
     
-    const clients = getClients();
-    
-    if (clients.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = '<td colspan="7" style="text-align: center;">No clients registered</td>';
-        clientsTableBody.appendChild(emptyRow);
-    } else {
-        clients.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+    try {
+        const clients = await getClients();
         
-        clients.forEach((client, index) => {
-            const row = document.createElement('tr');
-            
-            row.innerHTML = `
-                <td>${client.anumber}</td>
-                <td>${client.mtsLocation}</td>
-                <td>${client.consentimiento}</td>
-                <td>${client.estado}</td>
-                <td>${client.paralegal}</td>
-                <td>${formatDate(client.dateAdded)}</td>
-                <td>
-                    <button class="edit-btn" data-index="${index}">Edit</button>
-                    <button class="delete-btn delete" data-index="${index}">Delete</button>
-                </td>
-            `;
-            
-            clientsTableBody.appendChild(row);
-        });
+        clientsTableBody.innerHTML = '';
         
-        // Añadir event listeners a los botones
-        document.querySelectorAll('.edit-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = this.getAttribute('data-index');
-                openEditModal(index);
+        if (clients.length === 0) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = '<td colspan="7" style="text-align: center;">No clients registered</td>';
+            clientsTableBody.appendChild(emptyRow);
+        } else {
+            clients.forEach((client, index) => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${client.anumber}</td>
+                    <td>${client.mtsLocation}</td>
+                    <td>${client.consentimiento}</td>
+                    <td>${client.estado}</td>
+                    <td>${client.paralegal}</td>
+                    <td>${formatDate(client.dateAdded)}</td>
+                    <td>
+                        <button class="edit-btn" data-id="${client.id || index}">Edit</button>
+                        <button class="delete-btn delete" data-id="${client.id || index}">Delete</button>
+                    </td>
+                `;
+                
+                clientsTableBody.appendChild(row);
             });
-        });
-        
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = this.getAttribute('data-index');
-                openDeleteModal(index);
+            
+            // Añadir event listeners a los botones
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    openEditModal(id);
+                });
             });
-        });
+            
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    openDeleteModal(id);
+                });
+            });
+        }
+    } catch (error) {
+        console.error("Error loading clients:", error);
+        clientsTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Error loading clients</td></tr>';
     }
-}
-
-// Añadir un cliente
-function addClient(client) {
-    const clients = getClients();
-    clients.push(client);
-    return saveClients(clients);
-}
-
-// Actualizar un cliente
-function updateClient(index, updatedClient) {
-    const clients = getClients();
-    if (index >= 0 && index < clients.length) {
-        clients[index] = updatedClient;
-        return saveClients(clients);
-    }
-    return false;
-}
-
-// Eliminar un cliente
-function deleteClient(index) {
-    const clients = getClients();
-    if (index >= 0 && index < clients.length) {
-        clients.splice(index, 1);
-        return saveClients(clients);
-    }
-    return false;
 }
 
 // Buscar cliente por A#
-function findClientByAnumber(anumber) {
-    const clients = getClients();
-    const clientIndex = clients.findIndex(client => client.anumber === anumber);
-    
-    if (clientIndex !== -1) {
-        return { client: clients[clientIndex], index: clientIndex };
+async function findClientByAnumber(anumber) {
+    try {
+        const clients = await getClients();
+        const clientIndex = clients.findIndex(client => client.anumber === anumber);
+        
+        if (clientIndex !== -1) {
+            return { client: clients[clientIndex], id: clients[clientIndex].id || clientIndex };
+        }
+        return null;
+    } catch (error) {
+        console.error("Error finding client:", error);
+        return null;
     }
-    return null;
 }
 
 // Mostrar detalles de cliente en la pestaña de búsqueda
@@ -216,7 +314,7 @@ function displayClientDetails(clientData) {
     }
     
     const client = clientData.client;
-    currentClientIndex = clientData.index;
+    currentClientIndex = clientData.id;
     
     container.innerHTML = `
         <div class="detail-row"><span class="detail-label">A# Client:</span> ${client.anumber}</div>
@@ -232,18 +330,18 @@ function displayClientDetails(clientData) {
 }
 
 // Abrir modal de eliminación
-function openDeleteModal(index) {
-    currentClientIndex = index;
+function openDeleteModal(id) {
+    currentClientIndex = id;
     document.getElementById('deleteModal').style.display = 'block';
 }
 
 // Abrir modal de edición
-function openEditModal(index) {
-    const clients = getClients();
+async function openEditModal(id) {
+    const clients = await getClients();
+    const client = clients.find(c => (c.id || clients.indexOf(c)) == id);
     
-    if (index >= 0 && index < clients.length) {
-        const client = clients[index];
-        currentClientIndex = index;
+    if (client) {
+        currentClientIndex = id;
         
         // Llenar el formulario con los datos del cliente
         document.getElementById('editAnumber').value = client.anumber;
@@ -252,7 +350,6 @@ function openEditModal(index) {
         document.getElementById('editEstado').value = client.estado;
         document.getElementById('editParalegal').value = client.paralegal;
         document.getElementById('editNotes').value = client.notes || '';
-        document.getElementById('editClientIndex').value = index;
         
         // Actualizar contador de palabras
         const wordCount = (client.notes || '').trim().split(/\s+/).filter(Boolean).length;
@@ -266,7 +363,7 @@ function openEditModal(index) {
 // Event Listeners
 
 // Envío del formulario
-document.getElementById('clientForm').addEventListener('submit', function(e) {
+document.getElementById('clientForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const anumber = document.getElementById('anumber').value;
@@ -293,13 +390,18 @@ document.getElementById('clientForm').addEventListener('submit', function(e) {
         dateAdded: new Date().toISOString()
     };
     
-    if (addClient(client)) {
-        showMessage('message', 'Client added successfully');
-        this.reset();
-        document.getElementById('word-count').textContent = '0/100 words';
-        loadClients();
-    } else {
-        showMessage('message', 'Error adding client', true);
+    try {
+        if (await addClient(client)) {
+            showMessage('message', 'Client added successfully');
+            this.reset();
+            document.getElementById('word-count').textContent = '0/100 words';
+            await loadClients();
+        } else {
+            showMessage('message', 'Error adding client', true);
+        }
+    } catch (error) {
+        console.error("Error in form submission:", error);
+        showMessage('message', 'Error adding client: ' + error.message, true);
     }
 });
 
@@ -322,7 +424,7 @@ document.getElementById('searchInput').addEventListener('input', function(e) {
 });
 
 // Búsqueda de cliente
-document.getElementById('searchButton').addEventListener('click', function() {
+document.getElementById('searchButton').addEventListener('click', async function() {
     const searchValue = document.getElementById('searchInput').value.trim();
     
     if (!searchValue) {
@@ -330,10 +432,14 @@ document.getElementById('searchButton').addEventListener('click', function() {
         return;
     }
     
-    const clientData = findClientByAnumber(searchValue);
-    displayClientDetails(clientData);
+    try {
+        const clientData = await findClientByAnumber(searchValue);
+        displayClientDetails(clientData);
+    } catch (error) {
+        console.error("Error in search:", error);
+        showMessage('searchMessage', 'Error searching for client: ' + error.message, true);
+    }
 });
-
 
 // Botón Editar en la pestaña de búsqueda
 document.getElementById('editClientBtn').addEventListener('click', function() {
@@ -346,22 +452,27 @@ document.getElementById('deleteClientBtn').addEventListener('click', function() 
 });
 
 // Confirmar eliminación
-document.getElementById('confirmDelete').addEventListener('click', function() {
-    if (deleteClient(currentClientIndex)) {
-        document.getElementById('deleteModal').style.display = 'none';
-        
-        // Si estamos en la pestaña de búsqueda, ocultar los detalles
-        if (document.getElementById('search-tab').classList.contains('active')) {
-            document.getElementById('client-details').style.display = 'none';
-            document.getElementById('searchInput').value = '';
-            showMessage('searchMessage', 'Client deleted successfully');
+document.getElementById('confirmDelete').addEventListener('click', async function() {
+    try {
+        if (await deleteClient(currentClientIndex)) {
+            document.getElementById('deleteModal').style.display = 'none';
+            
+            // Si estamos en la pestaña de búsqueda, ocultar los detalles
+            if (document.getElementById('search-tab').classList.contains('active')) {
+                document.getElementById('client-details').style.display = 'none';
+                document.getElementById('searchInput').value = '';
+                showMessage('searchMessage', 'Client deleted successfully');
+            } else {
+                showMessage('message', 'Client deleted successfully');
+            }
+            
+            await loadClients();
         } else {
-            showMessage('message', 'Client deleted successfully');
+            showMessage('message', 'Error deleting client', true);
         }
-        
-        loadClients();
-    } else {
-        showMessage('message', 'Error deleting client', true);
+    } catch (error) {
+        console.error("Error deleting client:", error);
+        showMessage('message', 'Error deleting client: ' + error.message, true);
     }
 });
 
@@ -371,7 +482,7 @@ document.getElementById('cancelDelete').addEventListener('click', function() {
 });
 
 // Guardar cambios de edición
-document.getElementById('editForm').addEventListener('submit', function(e) {
+document.getElementById('editForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const anumber = document.getElementById('editAnumber').value;
@@ -380,43 +491,52 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
     const estado = document.getElementById('editEstado').value;
     const paralegal = document.getElementById('editParalegal').value;
     const notes = document.getElementById('editNotes').value;
-    const index = currentClientIndex;
     
     // Validar A# (debe tener formato 000-000-000)
     const anumberRegex = /^\d{3}-\d{3}-\d{3}$/;
     if (!anumberRegex.test(anumber)) {
-        showMessage('message', 'The A# must have the format 000-000-000', true);
+        showMessage('editMessage', 'The A# must have the format 000-000-000', true);
         return;
     }
     
-    // Obtener el cliente actual para mantener la fecha original
-    const clients = getClients();
-    const originalClient = clients[index];
-    
-    const updatedClient = {
-        anumber,
-        mtsLocation,
-        consentimiento,
-        estado,
-        paralegal,
-        notes,
-        dateAdded: originalClient.dateAdded
-    };
-    
-    if (updateClient(index, updatedClient)) {
-        document.getElementById('editModal').style.display = 'none';
+    try {
+        // Si estamos usando Firestore, necesitamos mantener el id separado
+        const clients = await getClients();
+        const clientToUpdate = clients.find(c => (c.id || clients.indexOf(c)) == currentClientIndex);
         
-        // Si estamos en la pestaña de búsqueda, actualizar los detalles
-        if (document.getElementById('search-tab').classList.contains('active')) {
-            displayClientDetails({ client: updatedClient, index: index });
-            showMessage('searchMessage', 'Client information updated successfully');
-        } else {
-            showMessage('message', 'Client information updated successfully');
+        if (!clientToUpdate) {
+            showMessage('message', 'Client not found', true);
+            return;
         }
         
-        loadClients();
-    } else {
-        showMessage('message', 'Error updating client information', true);
+        const updatedClient = {
+            anumber,
+            mtsLocation,
+            consentimiento,
+            estado,
+            paralegal,
+            notes,
+            dateAdded: clientToUpdate.dateAdded
+        };
+        
+        if (await updateClient(currentClientIndex, updatedClient)) {
+            document.getElementById('editModal').style.display = 'none';
+            
+            // Si estamos en la pestaña de búsqueda, actualizar los detalles
+            if (document.getElementById('search-tab').classList.contains('active')) {
+                displayClientDetails({ client: updatedClient, id: currentClientIndex });
+                showMessage('searchMessage', 'Client information updated successfully');
+            } else {
+                showMessage('message', 'Client information updated successfully');
+            }
+            
+            await loadClients();
+        } else {
+            showMessage('message', 'Error updating client information', true);
+        }
+    } catch (error) {
+        console.error("Error updating client:", error);
+        showMessage('message', 'Error updating client: ' + error.message, true);
     }
 });
 
@@ -427,5 +547,5 @@ document.getElementById('cancelEdit').addEventListener('click', function() {
 
 // Inicializar al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    loadClients();
+    initializeFirebase();
 });
