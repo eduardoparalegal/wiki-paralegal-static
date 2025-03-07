@@ -340,12 +340,83 @@ document.addEventListener('DOMContentLoaded', () => {
             skypeLink: "skype:+ 2063427248?call"
         },
         {
-            state: "Seattle",
+            state: "Concord",
+            city: "Butler",
+            courtName: "Amandy Liang ",
+            phoneNumber: "415-315-4627",
+            skypeLink: "skype:+4153154627?call"
+        },
+        {
+            state: "Concord",
+            city: "Chamberlin",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Eichenberger",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Lilien",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Nava",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Price",
+            courtName: "Magaly Velasco-Escobar",
+            phoneNumber: "415-705-0139",
+            skypeLink: "skype:+4157050139?call"
+        },
+        {
+            state: "Concord",
+            city: "Star",
+            courtName: "Tanner Robison",
+            phoneNumber: "415-315-4661",
+            skypeLink: "skype:+4153154661?call"
+        },
+        {
+            state: "Concord",
+            city: "Stender",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Torres",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
+            city: "Wilson",
+            courtName: "Not Available",
+            phoneNumber: "Pending",
+            skypeLink: "skype:+00000000?call"
+        },
+        {
+            state: "Concord",
             city: "Example",
             courtName: "Example",
             phoneNumber: "Example",
             skypeLink: "skype:+00000000?call"
         },
+
 
     ];
 
