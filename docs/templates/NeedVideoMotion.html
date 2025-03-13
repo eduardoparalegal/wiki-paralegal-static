@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Need Video Motion Check</title>
+    <link rel="stylesheet" href="../assets/css/NeedVideoMotion.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
+</head>
+<body>
+    <div class="container">
+        <h1>Need Video Motion Check</h1>
+        
+        <div class="search-container">
+            <input type="text" id="judgeSearch" placeholder="Enter judge name...">
+            <button id="searchButton">Search</button>
+        </div>
+        
+        <div id="resultContainer" class="hidden">
+            <div class="result-header">
+                <h2 id="judgeName">Judge Name</h2>
+                <p id="locationText">El Paso</p>
+            </div>
+            
+            <div class="result-table">
+                <div class="table-header">
+                    <div class="cell">Master</div>
+                    <div class="cell">Individual</div>
+                </div>
+                <div class="table-row">
+                    <div class="cell" id="masterResult">No</div>
+                    <div class="cell" id="individualResult">Yes</div>
+                </div>
+            </div>
+            
+            <div class="notice-container" id="noticeContainer">
+                <p id="noticeText" class="hidden">Look at case notice</p>
+            </div>
+            
+            <div class="copy-container">
+                <h3>Copy Text</h3>
+                <div class="copy-box" id="copyBox">
+                    <p id="copyText"></p>
+                </div>
+                <button id="copyButton">Copy to Clipboard</button>
+            </div>
+        </div>
+        
+        <div id="noResultContainer" class="hidden">
+            <p>No judge found with that name. Please try again.</p>
+        </div>
+    </div>
+    
+    <script src="../assets/js/NeedVideoMotion.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoMotion Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/videoMotionHome.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
+
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo-container" id="logo-container">
+                <img src="../assets/images/logo-svg.svg" alt="Logo" class="logo">
+                <div class="logo-text">VideoMotion</div>
+            </div>
+            <div class="sidebar-divider"></div>
+            <ul class="nav-list">
+                <li class="nav-item active">
+                    <a href="FirstSteps.html">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="documentation.html">
+                        <i class="fas fa-book"></i>
+                        <span class="nav-text">Documentation</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="judges.html">
+                        <i class="fas fa-gavel"></i>
+                        <span class="nav-text">List of Judges</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./NeedVideoMotion.html">
+                        <i class="fas fa-video"></i>
+                        <span class="nav-text">Need Video Motion</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <p>© 2025 VideoMotion</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <button class="toggle-sidebar" id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>VideoMotion Portal</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="user-profile">
+                        <img src="/api/placeholder/40/40" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <div class="vm-container">
+                <div class="vm-header">
+                    <h1>Welcome to VideoMotion</h1>
+                    <p>Navigate through our platform to find documentation, judge information, or request custom video solutions for your legal needs.</p>
+                </div>
+
+                <div class="vm-categories">
+                    <!-- Documentation Category -->
+                    <div class="vm-category" id="documentation-category">
+                        <div class="vm-category-bg documentation-bg"></div>
+                        <div class="vm-category-content">
+                            <div>
+                                <div class="vm-category-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="vm-category-title">Documentation</h3>
+                                <p class="vm-category-description">Access comprehensive guides, tutorials, and legal documentation templates.</p>
+                            </div>
+                            <a href="documentation.html" class="vm-category-link">
+                                Explore Documentation <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- List of Judges Category -->
+                    <div class="vm-category" id="judges-category">
+                        <div class="vm-category-bg judges-bg"></div>
+                        <div class="vm-category-content">
+                            <div>
+                                <div class="vm-category-icon">
+                                    <i class="fas fa-gavel"></i>
+                                </div>
+                                <h3 class="vm-category-title">List of Judges</h3>
+                                <p class="vm-category-description">Find detailed information about judges, their preferences, and scheduling.</p>
+                            </div>
+                            <a href="judges.html" class="vm-category-link">
+                                View Judges <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Need Video Motion Category -->
+                    <div class="vm-category" id="request-category">
+                        <div class="vm-category-bg request-bg"></div>
+                        <div class="vm-category-content">
+                            <div>
+                                <div class="vm-category-icon">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <h3 class="vm-category-title">Need Video Motion?</h3>
+                                <p class="vm-category-description">Request custom video solutions for your case presentations and legal proceedings.</p>
+                            </div>
+                            <a href="./NeedVideoMotion.html" class="vm-category-link">
+                                Request Service <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/videoMotionHome.js"></script>
+</body>
+</html>
