@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immigration Motion Document Editor</title>
+    <link rel="stylesheet" href="../assets/css/DocumentCreator.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Immigration Motion Document Editor</h1>
+        
+        <div class="form-container">
+            <h2>Enter Document Information</h2>
+            <form id="motionForm">
+                <div class="form-group">
+                    <label for="courtLocation">Immigration Court Location:</label>
+                    <select id="courtLocation" required>
+                        <option value="">-- Select Court Location --</option>
+                        <option value="SEATTLE, WA">Seattle, WA</option>
+                        <option value="SAN FRANCISCO, CA">San Francisco, CA</option>
+                        <option value="CONCORD, CA">Concord, CA</option>
+                        <option value="LOS ANGELES, CA">Los Angeles, CA</option>
+                        <option value="DALLAS, TX">Dallas, TX</option>
+                        <option value="HOUSTON, TX">Houston, TX</option>
+                        <option value="NEW YORK, NY">New York, NY</option>
+                        <option value="MIAMI, FL">Miami, FL</option>
+                        <option value="CHICAGO, IL">Chicago, IL</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientName">Client Full Name:</label>
+                    <input type="text" id="clientName" placeholder="e.g. Sirley Jhen Lopez Millas" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Alien Numbers (A#):</label>
+                    <div class="a-numbers">
+                        <input type="text" class="a-number" id="aNumber1" placeholder="XXX-XXX-XXX" required>
+                        <input type="text" class="a-number" id="aNumber2" placeholder="XXX-XXX-XXX">
+                        <input type="text" class="a-number" id="aNumber3" placeholder="XXX-XXX-XXX">
+                        <input type="text" class="a-number" id="aNumber4" placeholder="XXX-XXX-XXX">
+                        <input type="text" class="a-number" id="aNumber5" placeholder="XXX-XXX-XXX">
+                        <input type="text" class="a-number" id="aNumber6" placeholder="XXX-XXX-XXX">
+                        <input type="text" class="a-number" id="aNumber7" placeholder="XXX-XXX-XXX">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="judgeName">Judge Name:</label>
+                    <input type="text" id="judgeName" placeholder="e.g. Parchert" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="hearingDate">Hearing Date and Time:</label>
+                    <input type="date" id="hearingDate" required>
+                    <input type="time" id="hearingTime" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="previewBtn">Preview</button>
+                    <button type="button" id="generateBtn">Generate Document</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="preview-container" id="previewContainer">
+            <h2>Document Preview</h2>
+            <div class="preview-box">
+                <div class="document-header">
+                    <p class="centered bold">UNITED STATES DEPARTMENT OF JUSTICE</p>
+                    <p class="centered bold">EXECUTIVE OFFICE FOR IMMIGRATION REVIEW</p>
+                    <p class="centered bold">IMMIGRATION COURT</p>
+                    <p class="centered bold" id="previewCourtLocation">SEATTLE, WA</p>
+                </div>
+                <div class="document-body">
+                    <p>IN THE MATTER OF: ) A# <span id="previewANumbers">245-480-013,<br>
+                    ) 245-480-014</span></p>
+                    <p><span id="previewClientName">Sirley Jhen Lopez Millas</span> )</p>
+                    <p>)</p>
+                    <p>IN REMOVAL PROCEEDINGS ) NON DETAINED</p>
+                    <p>______________________ ) IJ <span id="previewJudge">Parchert</span>, <span id="previewHearingDateTime">04/09/2026 08:30 AM</span></p>
+                </div>
+                <div class="proof-service">
+                    <p class="bold">PROOF OF SERVICE</p>
+                    <p>I, Yuli Kaplunovsky, certify that I served a copy of this motion for substitution on <span id="currentDate"></span> via 1st class mail USPS, DHS E-Service/ECAS to: Office of Chief Counsel, at the address: <span id="previewDHSAddress">915 Second Avenue, Suite 708, Seattle, WA 98174</span>, and to Joseph LaCome via 1st class mail USPS to the following address: 1452 Hughes Rd, suite 200, Grapevine, TX 76051.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.42.4/docxtemplater.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.4/pizzip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.4/pizzip-utils.js"></script>
+    <script src="../assets/js/DocumentCreator.js"></script>
+</body>
+</html>
