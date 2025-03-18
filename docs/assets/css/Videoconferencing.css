@@ -1,0 +1,382 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #0f0f0f;
+    color: #fff;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+.main-header {
+    background-color: #121212;
+    padding: 15px 20px;
+    border-bottom: 1px solid #2d2d2d;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-content h1 {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.search-notifications {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container {
+    background-color: #222;
+    border-radius: 20px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #333;
+}
+
+.search-container input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    width: 200px;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-btn, .notification-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.search-btn:hover, .notification-btn:hover {
+    color: #fff;
+}
+
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.profile-icon:hover {
+    background-color: #666;
+}
+
+/* Main Content Styles */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.video-section {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2d2d2d;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #eee;
+}
+
+.more-options-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.more-options-btn:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* Video Container Styles */
+.video-container {
+    padding: 20px;
+}
+
+.video-item {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #2d2d2d;
+    padding-bottom: 25px;
+}
+
+.video-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.video-item h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.video-item p {
+    color: #aaa;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+/* Video Player Styles */
+.video-player {
+    position: relative;
+    width: 80%; /* Reducido del 100% al 80% */
+    max-width: 960px; /* Establece un ancho máximo */
+    height: 0;
+    padding-bottom: 45%; /* Ajustado para mantener proporción 16:9 (56.25% * 0.8) */
+    margin: 0 auto; /* Centra el video horizontalmente */
+    overflow: hidden;
+}
+.video-player video, 
+.video-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantiene la proporción original */
+}
+
+.video-player video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #000;
+}
+
+.video-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.play-btn {
+    background-color: #2d2d2d;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.play-btn:hover {
+    background-color: #404040;
+}
+
+.size-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.size-btn {
+    background-color: #2d2d2d;
+    color: #aaa;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.size-btn:hover {
+    background-color: #404040;
+}
+
+.size-btn.active {
+    background-color: #555;
+    color: #fff;
+}
+
+/* Video Size Classes with proper aspect ratios */
+.video-small {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.video-medium {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.video-large {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-large video {
+    width: 90%;
+    height: auto;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Video progress bar */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background-color: #333;
+    position: relative;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.progress {
+    height: 100%;
+    background-color: #f00;
+    border-radius: 2px;
+    width: 0;
+}
+
+/* Video info section */
+.video-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.uploader-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #444;
+    flex-shrink: 0;
+}
+
+.video-details {
+    flex-grow: 1;
+}
+
+.video-details .meta {
+    display: flex;
+    gap: 10px;
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .search-notifications {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .search-container {
+        flex-grow: 1;
+        max-width: calc(100% - 90px);
+    }
+    
+    .video-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .size-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .video-info {
+        flex-direction: column;
+    }
+    
+    .uploader-avatar {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-small {
+        max-width: 100%;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .video-item h3 {
+        font-size: 15px;
+    }
+}

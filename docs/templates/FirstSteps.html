@@ -7,8 +7,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/FirstSteps.css">
-    <link rel="icon" type="image/x-icon" href="assets/images/ley.ico">
-
+    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
+    <style>
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+    }
+    .modal-content {
+        background-color: var(--bg-darker);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        width: 80%;
+        max-width: 500px;
+        animation: modalAlert 0.4s ease-out;
+        border: 2px solid #ff6b6b;
+    }
+    .modal-close {
+        color: var(--text-secondary);
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color var(--transition-speed) ease;
+    }
+    .modal-close:hover {
+        color: #ff6b6b;
+    }
+    .modal-content h2 {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+        color: #ff6b6b;
+    }
+    .modal-content p {
+        margin-bottom: 15px;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    @keyframes modalAlert {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.9);
+        }
+        70% {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        100% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+    /* Make the Viviana card more obviously clickable */
+    #viviana-card {
+        cursor: pointer;
+        position: relative;
+    }
+    #viviana-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        opacity: 0;
+        transition: opacity var(--transition-speed) ease;
+    }
+    #viviana-card:hover::after {
+        opacity: 1;
+    }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -29,15 +113,14 @@
                             <li class="submenu-item"><a href="./CourtNumber.html">Courts Numbers</a></li>
                             <li class="submenu-item"><a href="./error-404.html">Videoconferencing</a></li>
                             <li class="submenu-item"><a href="./mts.HTML">MTS</a></li>
-                            <li class="submenu-item"><a href="./allDocumentation.html">Documentation</a></li>
-
+                            <li class="submenu-item"><a href="./allDocumentation.html">Download Section</a></li>
                         </ul>
                     </li>
                     <li class="nav-item has-submenu">
                         <a href="#"><i class="fa-solid fa-pen"></i><span class="nav-text">How is it done?</span><i class="fa-solid fa-chevron-down submenu-indicator"></i></a>
                         <ul class="submenu">
                             <li class="submenu-item"><a href="../templates/videoMotionHome.html">Video Motion</a></li>
-                            <li class="submenu-item"><a href="./error-404.html">Add Client</a></li>
+                            <li class="submenu-item"><a href="./Videoconferencing.html">Videoconferencing</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -90,14 +173,22 @@
                                 <p class="days">Mondays and Wednesdays</p>
                             </div>
                         </div>
-                        <div class="mail-out-card">
+                        <div class="mail-out-card" id="viviana-card">
                             <div class="card-icon"><i class="fas fa-envelope"></i></div>
                             <div class="card-content">
                                 <h3>Viviana</h3>
                                 <p class="days">Tuesday, Thursday, and Friday</p>
                             </div>
-                            
                         </div>
+                    </div>
+                </div>
+
+                <!-- Modal for Viviana - SOLO UN MODAL, FUERA DE CUALQUIER CONTENEDOR -->
+                <div id="vivianaModal" class="modal">
+                    <div class="modal-content">
+                        <span class="modal-close">&times;</span>
+                        <h2>Viviana's Mail-Out Details</h2>
+                        <p>Make two copies of Form I-589, place them inside the brown SASE envelope, and attach the I-589 SASE note for the clerk before sending.</p>
                     </div>
                 </div>
 
@@ -116,9 +207,6 @@
                                 <p>Some phone numbers were added, but not all. Send me a message if any are missing.</p>
                                 <span class="update-date">Updated Mar 6, 2025</span>
                             </div>
-                            
-                       
-                            
                         </div>
                         <div class="update-card">
                             <div class="update-icon">
@@ -126,7 +214,7 @@
                             </div>
                             <div class="update-content">
                                 <h3>Download Section</h3>
-                                <p>Added a section to download the covers.</p>
+                                <p>Added a section to download the covers and more.</p>
                                 <span class="update-date">Feb 28, 2025</span>
                             </div>
                         </div>
@@ -145,12 +233,11 @@
                                 <i class="fa-solid fa-shop-slash"></i>
                             </div>
                             <div class="update-content">
-                                <h3>Documentation</h3>
-                                <p>This section is still under development</p>
-                                <span class="update-date">Mar 6, 2025</span>
+                                <h3>Video Motion</h3>
+                                <p>An exclusive section for video motion, guides, consultations and more has been created.</p>
+                                <span class="update-date">Mar 10pxxxx, 2025</span>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
 
@@ -184,21 +271,21 @@
                                 <p>court telephone numbers are regularly added. If you have one that is missing write me</p>
                                 <div class="news-footer">
                                     <span class="news-date">Mar 2, 2025</span>
-                                    <a href="#" class="read-more">Read More</a>
+                                    <a href="./CourtNumber.html" class="read-more">See More</a>
                                 </div>
                             </div>
                         </div>
                         <div class="news-card">
                             <div class="news-image">
-                                <img src="../assets/images/under.jpg" alt="News">
+                                <img src="../assets/images/download_section.png" alt="News">
                             </div>
                             <div class="news-content">
-                                <span class="news-tag">not available</span>
-                                <h3>UNder development</h3>
-                                <p>Comming soon</p>
+                                <span class="news-tag">Available</span>
+                                <h3>Download Section available Now </h3>
+                                <p>Here, you will find motions, guides, and all documents in their latest version, along with their last update date.</p>
                                 <div class="news-footer">
-                                    <span class="news-date">may 28, 2025</span>
-                                    <a href="#" class="read-more">see more soon</a>
+                                    <span class="news-date">march 17, 2025</span>
+                                    <a href="./allDocumentation.html" class="read-more">see more soon</a>
                                 </div>
                             </div>
                         </div>
@@ -209,5 +296,32 @@
     </div>
 
     <script src="../assets/js/FirstSteps.js"></script>
+    <script>
+    // Script para el modal de Viviana
+    document.addEventListener('DOMContentLoaded', function() {
+        const vivianaCard = document.getElementById('viviana-card');
+        const vivianaModal = document.getElementById('vivianaModal');
+        const modalClose = document.querySelector('.modal-close');
+        
+        if (vivianaCard && vivianaModal && modalClose) {
+            // Add click event to Viviana's card
+            vivianaCard.addEventListener('click', function() {
+                vivianaModal.style.display = 'block';
+            });
+            
+            // Close modal when clicking the × button
+            modalClose.addEventListener('click', function() {
+                vivianaModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside of it
+            window.addEventListener('click', function(event) {
+                if (event.target === vivianaModal) {
+                    vivianaModal.style.display = 'none';
+                }
+            });
+        }
+    });
+    </script>
 </body>
 </html>
