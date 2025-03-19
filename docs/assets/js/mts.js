@@ -11,8 +11,12 @@ import {
     query,
     where,
     getDocs,
+    getDoc,
     serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+// Importar el sistema de notificaciones
+import { checkReminders } from './notifications.js';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -29,6 +33,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
+
+// Exportar db para uso en otros archivos
+export { db };
+// Exportar función para mostrar mensajes
+export function showMessage(text, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = text;
+    messageDiv.className = 'message ' + type;
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+        messageDiv.textContent = '';
+        messageDiv.className = 'message';
+    }, 5000);
+}
 
 // DOM Elements
 const statusForm = document.getElementById('statusForm');
@@ -54,6 +73,19 @@ const editANumberInput = document.getElementById('editANumber');
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
+    // Verificar si hay un A# en la URL (para navegación desde notificaciones)
+    const urlParams = new URLSearchParams(window.location.search);
+    const aNumberParam = urlParams.get('aNumber');
+    
+    if (aNumberParam) {
+        // Activar la pestaña de búsqueda
+        document.querySelector('[data-tab="search"]').click();
+        
+        // Llenar el campo de búsqueda con el A# y ejecutar la búsqueda
+        searchANumberInput.value = aNumberParam;
+        searchBtn.click();
+    }
+    
     // Format A# inputs
     setupANumberInput(aNumberInput);
     setupANumberInput(searchANumberInput);
@@ -145,7 +177,31 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Add document to Firestore
-            await addDoc(collection(db, "registros"), recordData);
+            const docRef = await addDoc(collection(db, "registros"), recordData);
+            
+            // If there's a note/reminder, create a Google Calendar event
+            if (hasNote) {
+                try {
+                    const eventTitle = `A#: ${aNumber} - ${status}`;
+                    const eventDescription = note;
+                    const eventDate = reminderDate;
+                    const eventTime = "09:00"; // Default time, you might want to add a time picker
+                    
+                    // Import the calendar function
+                    const { addEventToCalendar } = await import('./calendar-integration.js');
+                    
+                    // Create calendar event
+                    const eventId = await addEventToCalendar(eventTitle, eventDescription, eventDate, eventTime);
+                    
+                    // Save the event ID in Firestore
+                    await updateDoc(doc(db, "registros", docRef.id), {
+                        calendarEventId: eventId
+                    });
+                } catch (error) {
+                    console.error("Error creating calendar event:", error);
+                    // Don't block the main flow if calendar fails
+                }
+            }
             
             // Clear form
             statusForm.reset();
@@ -154,11 +210,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             showMessage('Record successfully saved', 'success');
             
+            // Verificar si hay nuevos recordatorios para hoy
+            await checkReminders();
+            
         } catch (error) {
             console.error("Error saving the record:", error);
             showMessage('Error saving the record', 'error');
         }
     });
+
+    
     
     // Search for record
     searchBtn.addEventListener('click', async function() {
@@ -269,8 +330,66 @@ document.addEventListener('DOMContentLoaded', function() {
             const docRef = doc(db, "registros", docId);
             await updateDoc(docRef, recordData);
             
+            // If there's a note/reminder, update or create Google Calendar event
+            if (hasNote) {
+                try {
+                    const eventTitle = `A#: ${aNumber} - ${status}`;
+                    const eventDescription = recordData.note;
+                    const eventDate = recordData.reminderDate;
+                    const eventTime = "09:00"; // Default time
+                    
+                    // Import the calendar functions
+                    const { addEventToCalendar, updateCalendarEvent } = await import('./calendar-integration.js');
+                    
+                    // Check if we already have an event ID
+                    const docSnapshot = await getDoc(doc(db, "registros", docId));
+                    const existingData = docSnapshot.data();
+                    
+                    if (existingData.calendarEventId) {
+                        // Update existing event
+                        await updateCalendarEvent(existingData.calendarEventId, eventTitle, eventDescription, eventDate, eventTime);
+                    } else {
+                        // Create new event
+                        const eventId = await addEventToCalendar(eventTitle, eventDescription, eventDate, eventTime);
+                        
+                        // Save the event ID
+                        await updateDoc(doc(db, "registros", docId), {
+                            calendarEventId: eventId
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error updating calendar event:", error);
+                    // Don't block the main flow if calendar fails
+                }
+            } else {
+                // If reminder was removed, delete the calendar event
+                try {
+                    const docSnapshot = await getDoc(doc(db, "registros", docId));
+                    const existingData = docSnapshot.data();
+                    
+                    if (existingData.calendarEventId) {
+                        // Import the calendar function
+                        const { deleteCalendarEvent } = await import('./calendar-integration.js');
+                        
+                        // Delete the event
+                        await deleteCalendarEvent(existingData.calendarEventId);
+                        
+                        // Remove the event ID
+                        await updateDoc(doc(db, "registros", docId), {
+                            calendarEventId: null
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error deleting calendar event:", error);
+                    // Don't block the main flow if calendar fails
+                }
+            }
+            
             // Show success message
             showMessage('Registration successfully updated', 'success');
+            
+            // Verificar si hay nuevos recordatorios para hoy
+            await checkReminders();
             
         } catch (error) {
             console.error("Error updating the registry:", error);
@@ -284,6 +403,23 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const docId = document.getElementById('docId').value;
                 
+                // Before deleting the document, check if there's a calendar event to delete
+                try {
+                    const docSnapshot = await getDoc(doc(db, "registros", docId));
+                    const existingData = docSnapshot.data();
+                    
+                    if (existingData.calendarEventId) {
+                        // Import the calendar function
+                        const { deleteCalendarEvent } = await import('./calendar-integration.js');
+                        
+                        // Delete the event
+                        await deleteCalendarEvent(existingData.calendarEventId);
+                    }
+                } catch (error) {
+                    console.error("Error deleting calendar event:", error);
+                    // Don't block the main flow if calendar fails
+                }
+                
                 // Delete document from Firestore
                 const docRef = doc(db, "registros", docId);
                 await deleteDoc(docRef);
@@ -294,6 +430,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Show success message
                 showMessage('Registro eliminado exitosamente', 'success');
+                
+                // Verificar si hay nuevos recordatorios para hoy
+                await checkReminders();
                 
             } catch (error) {
                 console.error("Error al eliminar el registro:", error);
@@ -327,18 +466,6 @@ function setupANumberInput(input) {
         
         e.target.value = value;
     });
-}
-
-// Helper function to show messages
-function showMessage(text, type) {
-    messageDiv.textContent = text;
-    messageDiv.className = 'message ' + type;
-    
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        messageDiv.textContent = '';
-        messageDiv.className = 'message';
-    }, 5000);
 }
 
 // Helper function to count words

@@ -234,3 +234,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar la aplicación
     init();
 });
+
+// Función para actualizar la fecha y hora (complementa tu función existente)
+function updateDateTime() {
+    const dateTimeElement = document.getElementById('current-datetime');
+    if (dateTimeElement) {
+        const now = new Date();
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit'
+        };
+        dateTimeElement.textContent = now.toLocaleDateString('en-US', options);
+        
+        // Verificar recordatorios cada vez que se actualiza la fecha/hora
+        if (typeof checkReminders === 'function') {
+            checkReminders();
+        }
+    }
+}
+
+// Inicializar verificación de recordatorios al cargar
+document.addEventListener('DOMContentLoaded', function() {
+    // Código existente...
+    
+    // Verificar recordatorios periódicamente (cada hora)
+    setInterval(function() {
+        if (typeof checkReminders === 'function') {
+            checkReminders();
+        }
+    }, 3600000); // 1 hora
+});
