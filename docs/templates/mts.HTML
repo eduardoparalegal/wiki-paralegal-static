@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Sistema de Gestión</h1>
+        <h1>MTS & E-28</h1>
         
         <div class="tabs">
             <button class="tab-btn active" data-tab="add">Add</button>
@@ -19,15 +19,15 @@
         <div id="addTab" class="tab-content active">
             <form id="statusForm">
                 <div class="form-group">
-                    <label for="aNumber">A# (Formato: 123-123-123):</label>
+                    <label for="aNumber">A# (Format: 123-123-123):</label>
                     <input type="text" id="aNumber" name="aNumber" placeholder="123-123-123" pattern="\d{3}-\d{3}-\d{3}" required>
-                    <div class="hint">Formato requerido: 123-123-123</div>
+                    <div class="hint">Required format: 123-123-123</div>
                 </div>
                 
                 <div class="form-group">
                     <label for="status">Status:</label>
                     <select id="status" name="status" required>
-                        <option value="" disabled selected>Seleccionar status</option>
+                        <option value="" disabled selected>Select status</option>
                         <option value="No drafted">No drafted</option>
                         <option value="Granted">Granted</option>
                         <option value="Denied">Denied</option>
@@ -39,23 +39,23 @@
                 
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="leaveNote" name="leaveNote">
-                    <label for="leaveNote">¿Desea dejar una nota/recordatorio?</label>
+                    <label for="leaveNote">Would you like to leave a note/reminder?</label>
                 </div>
                 
                 <div id="noteSection" class="hidden">
                     <div class="form-group">
-                        <label for="reminderDate">Fecha del recordatorio:</label>
+                        <label for="reminderDate">Date of reminder:</label>
                         <input type="date" id="reminderDate" name="reminderDate">
                     </div>
                     
                     <div class="form-group">
-                        <label for="noteText">Nota (máximo 10 palabras):</label>
+                        <label for="noteText">Note (maximum 10 words):</label>
                         <textarea id="noteText" name="noteText" maxlength="100" rows="2"></textarea>
-                        <div id="wordCount">0/10 palabras</div>
+                        <div id="wordCount">0/10 words</div>
                     </div>
                 </div>
                 
-                <button type="submit" class="submit-btn">Guardar</button>
+                <button type="submit" class="submit-btn">Save</button>
             </form>
         </div>
         
@@ -64,18 +64,18 @@
             <div class="search-section">
                 <div class="form-group search-container">
                     <input type="text" id="searchANumber" placeholder="Buscar por A# (123-123-123)" pattern="\d{3}-\d{3}-\d{3}">
-                    <button id="searchBtn" class="btn">Buscar</button>
+                    <button id="searchBtn" class="btn">Search</button>
                 </div>
-                <div class="hint">Formato requerido: 123-123-123</div>
+                <div class="hint">Required format: 123-123-123</div>
             </div>
             
             <div id="searchResults" class="hidden">
                 <form id="editForm">
                     <input type="hidden" id="docId">
                     <div class="form-group">
-                        <label for="editANumber">A# (Formato: 123-123-123):</label>
+                        <label for="editANumber">Required format: 123-123-123</label>
                         <input type="text" id="editANumber" name="editANumber" placeholder="123-123-123" pattern="\d{3}-\d{3}-\d{3}" required>
-                        <div class="hint">Formato requerido: 123-123-123</div>
+                        <div class="hint">Required format: 123-123-123</div>
                     </div>
                     
                     <div class="form-group">
@@ -92,31 +92,31 @@
                     
                     <div class="form-group checkbox-group">
                         <input type="checkbox" id="editLeaveNote" name="editLeaveNote">
-                        <label for="editLeaveNote">¿Desea dejar una nota/recordatorio?</label>
+                        <label for="editLeaveNote">Would you like to leave a note/reminder?</label>
                     </div>
                     
                     <div id="editNoteSection" class="hidden">
                         <div class="form-group">
-                            <label for="editReminderDate">Fecha del recordatorio:</label>
+                            <label for="editReminderDate">Date of reminder:</label>
                             <input type="date" id="editReminderDate" name="editReminderDate">
                         </div>
                         
                         <div class="form-group">
-                            <label for="editNoteText">Nota (máximo 10 palabras):</label>
+                            <label for="editNoteText">Note (maximum 10 words):</label>
                             <textarea id="editNoteText" name="editNoteText" maxlength="100" rows="2"></textarea>
-                            <div id="editWordCount">0/10 palabras</div>
+                            <div id="editWordCount">0/10 words</div>
                         </div>
                     </div>
                     
                     <div class="button-group">
-                        <button type="submit" class="submit-btn">Actualizar</button>
-                        <button type="button" id="deleteBtn" class="delete-btn">Eliminar</button>
+                        <button type="submit" class="submit-btn">Update</button>
+                        <button type="button" id="deleteBtn" class="delete-btn">Delete</button>
                     </div>
                 </form>
             </div>
             
             <div id="noResults" class="hidden">
-                <p>No se encontró ningún registro con ese A#.</p>
+                <p>No record was found with that A#.</p>
             </div>
         </div>
         

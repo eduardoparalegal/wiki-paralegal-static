@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Validate A# format
             if (!validateANumber(aNumber)) {
-                showMessage('El A# debe tener el formato 123-123-123', 'error');
+                showMessage('The A# must have the format 123-123-123', 'error');
                 return;
             }
             
@@ -131,12 +131,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const note = noteText.value.trim();
                 
                 if (!reminderDate) {
-                    showMessage('Por favor seleccione una fecha para el recordatorio', 'error');
+                    showMessage('Please select a date for the reminder', 'error');
                     return;
                 }
                 
                 if (note === '') {
-                    showMessage('Por favor ingrese una nota', 'error');
+                    showMessage('Please enter a note', 'error');
                     return;
                 }
                 
@@ -152,11 +152,11 @@ document.addEventListener('DOMContentLoaded', function() {
             noteSection.classList.add('hidden');
             
             // Show success message
-            showMessage('Registro guardado exitosamente', 'success');
+            showMessage('Record successfully saved', 'success');
             
         } catch (error) {
-            console.error("Error al guardar el registro:", error);
-            showMessage('Error al guardar el registro', 'error');
+            console.error("Error saving the record:", error);
+            showMessage('Error saving the record', 'error');
         }
     });
     
@@ -165,13 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchValue = searchANumberInput.value.trim();
         
         if (!searchValue) {
-            showMessage('Por favor ingrese un A# para buscar', 'error');
+            showMessage('Please enter an A# to search', 'error');
             return;
         }
         
         // Validate A# format
         if (!validateANumber(searchValue)) {
-            showMessage('El A# debe tener el formato 123-123-123', 'error');
+            showMessage('The A# must have the format 123-123-123', 'error');
             return;
         }
         
@@ -214,8 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
             searchResults.classList.remove('hidden');
             
         } catch (error) {
-            console.error("Error al buscar el registro:", error);
-            showMessage('Error al buscar el registro', 'error');
+            console.error("Error searching for the record:", error);
+            showMessage('Error searching for the record:', 'error');
         }
     });
     
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Validate A# format
             if (!validateANumber(aNumber)) {
-                showMessage('El A# debe tener el formato 123-123-123', 'error');
+                showMessage('The A# must have the format 123-123-123', 'error');
                 return;
             }
             
@@ -270,11 +270,11 @@ document.addEventListener('DOMContentLoaded', function() {
             await updateDoc(docRef, recordData);
             
             // Show success message
-            showMessage('Registro actualizado exitosamente', 'success');
+            showMessage('Registration successfully updated', 'success');
             
         } catch (error) {
-            console.error("Error al actualizar el registro:", error);
-            showMessage('Error al actualizar el registro', 'error');
+            console.error("Error updating the registry:", error);
+            showMessage('Error updating the registry:', 'error');
         }
     });
     
