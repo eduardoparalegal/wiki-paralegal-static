@@ -1,52 +1,66 @@
-/* Base Styles */
-:root {
-    --primary-color: #3b82f6;
-    --primary-hover: #2563eb;
-    --error-color: #ef4444;
-    --success-color: #10b981;
-    --bg-color: #f9fafb;
-    --text-color: #374151;
-    --border-color: #e5e7eb;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 600px;
-    margin: 40px auto;
+    background-color: #000;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
 }
 
-/* Header Styles */
-header {
-    margin-bottom: 30px;
-    text-align: center;
+.container {
+    background-color: #111;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    color: var(--primary-color);
-    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f0f0f0;
+    font-size: 24px;
 }
 
-/* Form Styles */
-.form-container {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    padding: 24px;
-    margin-bottom: 20px;
+/* Tabs */
+.tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #333;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+    flex: 1;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    color: #fff;
+    border-bottom: 2px solid #555;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 .form-group {
@@ -56,109 +70,146 @@ h1 {
 label {
     display: block;
     margin-bottom: 8px;
-    font-weight: 500;
+    color: #ccc;
+    font-size: 14px;
 }
 
-input, select {
+input[type="text"],
+select,
+textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
-}
-
-small {
-    color: #666;
-    font-size: 12px;
-    margin-top: 4px;
-    display: block;
-}
-
-/* Button Styles */
-.form-actions {
-    text-align: center;
-    margin-top: 30px;
-}
-
-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: var(--primary-hover);
-}
-
-/* Message Styles */
-.message {
-    display: none;
     padding: 12px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+    font-size: 16px;
+}
+
+input[type="text"]:invalid {
+    border-color: #500;
+}
+
+.hint {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #222;
+    color: #fff;
+    font-size: 16px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: #444;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.submit-btn, .btn {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover, .btn:hover {
+    background-color: #666;
+}
+
+.delete-btn {
+    background-color: #500;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.delete-btn:hover {
+    background-color: #700;
+}
+
+.hidden {
+    display: none;
+}
+
+#wordCount, #editWordCount {
+    text-align: right;
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
     border-radius: 4px;
     text-align: center;
-    margin-top: 20px;
-    font-weight: 500;
 }
 
 .success {
-    background-color: rgba(16, 185, 129, 0.1);
-    color: var(--success-color);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background-color: rgba(75, 181, 67, 0.2);
+    color: #4BB543;
 }
 
 .error {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: var(--error-color);
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background-color: rgba(255, 76, 76, 0.2);
+    color: #FF4C4C;
 }
 
-/* Loading Overlay */
-.loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1000;
-}
-
-.loading-overlay.active {
+/* Search section */
+.search-container {
     display: flex;
+    gap: 10px;
 }
 
-.spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid white;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
+.search-container input {
+    flex: 1;
 }
 
-.loading-overlay p {
-    color: white;
-    font-weight: 500;
+.search-container button {
+    width: auto;
+    padding: 12px 20px;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+#noResults {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

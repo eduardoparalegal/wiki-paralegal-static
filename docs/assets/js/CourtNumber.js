@@ -336,8 +336,8 @@ document.addEventListener('DOMContentLoaded', () => {
             state: "Seattle",
             city: "Windrow",
             courtName: "Sernya Codd",
-            phoneNumber: "Example",
-            skypeLink: "skype:+ 2063427248?call"
+            phoneNumber: "+1 206-342-7248",
+            skypeLink: "skype:+1 206-342-7248?call"
         },
         {
             state: "Concord",
