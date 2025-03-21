@@ -1,485 +1,544 @@
-// Import the functions you need from the SDKs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
-import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    updateDoc,
-    deleteDoc,
-    doc,
-    query,
-    where,
-    getDocs,
-    getDoc,
-    serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { clientsCollection, addDoc, getDocs, query, where, updateDoc, deleteDoc, doc } from './firebase-config.js';
+import { createReminder, updateReminder, deleteReminder } from './calendar-integration.js';
 
-// Importar el sistema de notificaciones
-import { checkReminders } from './notifications.js';
+// Global variables
+let clients = [];
+let currentClientId = null;
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCW4Nrvz8TXu6gdsGuOpmNKexmNoZ75uv0",
-  authDomain: "base-de-datos-de-cliente-71302.firebaseapp.com",
-  projectId: "base-de-datos-de-cliente-71302",
-  storageBucket: "base-de-datos-de-cliente-71302.firebasestorage.app",
-  messagingSenderId: "532728219495",
-  appId: "1:532728219495:web:bce1f335da96be930ad1c2",
-  measurementId: "G-Y1M6QJ30B9"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
-
-// Exportar db para uso en otros archivos
-export { db };
-// Exportar función para mostrar mensajes
-export function showMessage(text, type) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = text;
-    messageDiv.className = 'message ' + type;
-    
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        messageDiv.textContent = '';
-        messageDiv.className = 'message';
-    }, 5000);
-}
-
-// DOM Elements
-const statusForm = document.getElementById('statusForm');
-const editForm = document.getElementById('editForm');
-const leaveNoteCheckbox = document.getElementById('leaveNote');
-const noteSection = document.getElementById('noteSection');
-const noteText = document.getElementById('noteText');
-const wordCount = document.getElementById('wordCount');
-const editLeaveNoteCheckbox = document.getElementById('editLeaveNote');
-const editNoteSection = document.getElementById('editNoteSection');
-const editNoteText = document.getElementById('editNoteText');
-const editWordCount = document.getElementById('editWordCount');
-const messageDiv = document.getElementById('message');
-const searchBtn = document.getElementById('searchBtn');
-const searchResults = document.getElementById('searchResults');
-const noResults = document.getElementById('noResults');
-const deleteBtn = document.getElementById('deleteBtn');
-const tabBtns = document.querySelectorAll('.tab-btn');
-const tabContents = document.querySelectorAll('.tab-content');
+// DOM elements
 const aNumberInput = document.getElementById('aNumber');
-const searchANumberInput = document.getElementById('searchANumber');
+const statusSelect = document.getElementById('status');
+const hasNoteCheckbox = document.getElementById('hasNote');
+const noteSection = document.getElementById('noteSection');
+const noteInput = document.getElementById('note');
+const wordCountSpan = document.getElementById('wordCount');
+const reminderDateInput = document.getElementById('reminderDate');
+const reminderTimeInput = document.getElementById('reminderTime');
+const saveButton = document.getElementById('saveButton');
+const messageElement = document.getElementById('message');
+const clientsTableBody = document.querySelector('#clientsTable tbody');
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
+const searchResults = document.getElementById('searchResults');
+const editModal = document.getElementById('editModal');
+const closeModalButton = document.querySelector('.close');
 const editANumberInput = document.getElementById('editANumber');
+const editStatusSelect = document.getElementById('editStatus');
+const editHasNoteCheckbox = document.getElementById('editHasNote');
+const editNoteSection = document.getElementById('editNoteSection');
+const editNoteInput = document.getElementById('editNote');
+const editWordCountSpan = document.getElementById('editWordCount');
+const editReminderDateInput = document.getElementById('editReminderDate');
+const editReminderTimeInput = document.getElementById('editReminderTime');
+const updateButton = document.getElementById('updateButton');
+const deleteButton = document.getElementById('deleteButton');
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar si hay un A# en la URL (para navegación desde notificaciones)
-    const urlParams = new URLSearchParams(window.location.search);
-    const aNumberParam = urlParams.get('aNumber');
+// Function to format A# automatically (000-000-000)
+function formatANumber(input) {
+    // Remove non-digit characters
+    let value = input.value.replace(/\D/g, '');
     
-    if (aNumberParam) {
-        // Activar la pestaña de búsqueda
-        document.querySelector('[data-tab="search"]').click();
-        
-        // Llenar el campo de búsqueda con el A# y ejecutar la búsqueda
-        searchANumberInput.value = aNumberParam;
-        searchBtn.click();
+    // Limit to 9 digits
+    value = value.substring(0, 9);
+    
+    // Apply format XXX-XXX-XXX
+    if (value.length > 6) {
+        value = value.substring(0, 3) + '-' + value.substring(3, 6) + '-' + value.substring(6);
+    } else if (value.length > 3) {
+        value = value.substring(0, 3) + '-' + value.substring(3);
     }
     
-    // Format A# inputs
-    setupANumberInput(aNumberInput);
-    setupANumberInput(searchANumberInput);
-    setupANumberInput(editANumberInput);
+    // Update input value
+    input.value = value;
+}
 
-    // Tab switching
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.getAttribute('data-tab');
-            
-            // Deactivate all tabs
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-            
-            // Activate selected tab
-            btn.classList.add('active');
-            document.getElementById(`${tabId}Tab`).classList.add('active');
-            
-            // Clear messages
-            messageDiv.textContent = '';
-            messageDiv.className = 'message';
-            
-            // Reset search results
-            if (tabId === 'add') {
-                searchResults.classList.add('hidden');
-                noResults.classList.add('hidden');
-            }
+// Function to count words
+function countWords(input, countElement) {
+    const words = input.value.trim().split(/\s+/);
+    const wordCount = input.value.trim() === '' ? 0 : words.length;
+    countElement.textContent = `${wordCount}/10`;
+    
+    // Validate word limit
+    if (wordCount > 10) {
+        countElement.style.color = 'red';
+    } else {
+        countElement.style.color = '#999';
+    }
+}
+
+// Function to show message
+function showMessage(message, isError = false) {
+    messageElement.textContent = message;
+    messageElement.className = isError ? 'message error' : 'message success';
+    
+    // Hide message after 3 seconds
+    setTimeout(() => {
+        messageElement.textContent = '';
+        messageElement.className = 'message';
+    }, 3000);
+}
+
+// Function to load clients from Firebase
+async function loadClients() {
+    try {
+        const querySnapshot = await getDocs(clientsCollection);
+        clients = [];
+        
+        querySnapshot.forEach((doc) => {
+            clients.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        renderClientsTable();
+    } catch (error) {
+        console.error("Error loading clients:", error);
+        showMessage("Error loading clients: " + error.message, true);
+    }
+}
+
+// Function to render clients table
+function renderClientsTable() {
+    clientsTableBody.innerHTML = '';
+    
+    clients.forEach(client => {
+        const row = document.createElement('tr');
+        
+        // Format date and time if exists
+        let reminderText = 'N/A';
+        if (client.reminderDate && client.reminderTime) {
+            const date = new Date(client.reminderDate + 'T' + client.reminderTime);
+            reminderText = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+        }
+        
+        row.innerHTML = `
+            <td>${client.aNumber}</td>
+            <td>${client.status}</td>
+            <td>${client.note || 'N/A'}</td>
+            <td>${reminderText}</td>
+            <td class="action-buttons">
+                <button class="edit-button" data-id="${client.id}">Edit</button>
+            </td>
+        `;
+        
+        clientsTableBody.appendChild(row);
+    });
+    
+    // Add event listeners to edit buttons
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const clientId = button.getAttribute('data-id');
+            openEditModal(clientId);
         });
     });
+}
 
-    // Toggle note section visibility
-    leaveNoteCheckbox.addEventListener('change', function() {
-        noteSection.classList.toggle('hidden', !this.checked);
-    });
+// Function to open edit modal
+function openEditModal(clientId) {
+    const client = clients.find(c => c.id === clientId);
+    if (!client) return;
     
-    editLeaveNoteCheckbox.addEventListener('change', function() {
-        editNoteSection.classList.toggle('hidden', !this.checked);
-    });
+    currentClientId = clientId;
+    
+    // Fill modal fields with client info
+    editANumberInput.value = client.aNumber;
+    editStatusSelect.value = client.status;
+    
+    if (client.note) {
+        editHasNoteCheckbox.checked = true;
+        editNoteSection.classList.remove('hidden');
+        editNoteInput.value = client.note;
+        countWords(editNoteInput, editWordCountSpan);
+    } else {
+        editHasNoteCheckbox.checked = false;
+        editNoteSection.classList.add('hidden');
+        editNoteInput.value = '';
+        editWordCountSpan.textContent = '0/10';
+    }
+    
+    if (client.reminderDate && client.reminderTime) {
+        editReminderDateInput.value = client.reminderDate;
+        editReminderTimeInput.value = client.reminderTime;
+    } else {
+        editReminderDateInput.value = '';
+        editReminderTimeInput.value = '';
+    }
+    
+    // Show modal
+    editModal.style.display = 'block';
+}
 
-    // Word count for note (limit to 10 words)
-    noteText.addEventListener('input', function() {
-        countWords(this, wordCount);
-    });
+// Function to search clients
+async function searchClients() {
+    const searchValue = searchInput.value.trim();
     
-    editNoteText.addEventListener('input', function() {
-        countWords(this, editWordCount);
-    });
-
-    // Form submission for adding new record
-    statusForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        try {
-            const aNumber = aNumberInput.value;
-            
-            // Validate A# format
-            if (!validateANumber(aNumber)) {
-                showMessage('The A# must have the format 123-123-123', 'error');
-                return;
-            }
-            
-            const status = document.getElementById('status').value;
-            const hasNote = leaveNoteCheckbox.checked;
-            
-            let recordData = {
-                aNumber: aNumber,
-                status: status,
-                hasNote: hasNote,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
-            };
-            
-            if (hasNote) {
-                const reminderDate = document.getElementById('reminderDate').value;
-                const note = noteText.value.trim();
-                
-                if (!reminderDate) {
-                    showMessage('Please select a date for the reminder', 'error');
-                    return;
-                }
-                
-                if (note === '') {
-                    showMessage('Please enter a note', 'error');
-                    return;
-                }
-                
-                recordData.reminderDate = reminderDate;
-                recordData.note = note;
-            }
-            
-            // Add document to Firestore
-            const docRef = await addDoc(collection(db, "registros"), recordData);
-            
-            // If there's a note/reminder, create a Google Calendar event
-            if (hasNote) {
-                try {
-                    const eventTitle = `A#: ${aNumber} - ${status}`;
-                    const eventDescription = note;
-                    const eventDate = reminderDate;
-                    const eventTime = "09:00"; // Default time, you might want to add a time picker
-                    
-                    // Import the calendar function
-                    const { addEventToCalendar } = await import('./calendar-integration.js');
-                    
-                    // Create calendar event
-                    const eventId = await addEventToCalendar(eventTitle, eventDescription, eventDate, eventTime);
-                    
-                    // Save the event ID in Firestore
-                    await updateDoc(doc(db, "registros", docRef.id), {
-                        calendarEventId: eventId
-                    });
-                } catch (error) {
-                    console.error("Error creating calendar event:", error);
-                    // Don't block the main flow if calendar fails
-                }
-            }
-            
-            // Clear form
-            statusForm.reset();
-            noteSection.classList.add('hidden');
-            
-            // Show success message
-            showMessage('Record successfully saved', 'success');
-            
-            // Verificar si hay nuevos recordatorios para hoy
-            await checkReminders();
-            
-        } catch (error) {
-            console.error("Error saving the record:", error);
-            showMessage('Error saving the record', 'error');
-        }
-    });
-
+    if (!searchValue) {
+        searchResults.innerHTML = '';
+        return;
+    }
     
-    
-    // Search for record
-    searchBtn.addEventListener('click', async function() {
-        const searchValue = searchANumberInput.value.trim();
+    try {
+        let results = [];
         
-        if (!searchValue) {
-            showMessage('Please enter an A# to search', 'error');
-            return;
-        }
-        
-        // Validate A# format
-        if (!validateANumber(searchValue)) {
-            showMessage('The A# must have the format 123-123-123', 'error');
-            return;
-        }
-        
-        try {
-            const q = query(collection(db, "registros"), where("aNumber", "==", searchValue));
+        // If search value has A# format, search by A#
+        if (/^\d{3}-\d{3}-\d{3}$/.test(searchValue)) {
+            const q = query(clientsCollection, where("aNumber", "==", searchValue));
             const querySnapshot = await getDocs(q);
             
-            searchResults.classList.add('hidden');
-            noResults.classList.add('hidden');
-            
-            if (querySnapshot.empty) {
-                noResults.classList.remove('hidden');
-                return;
-            }
-            
-            // Use the first matching document
-            const doc = querySnapshot.docs[0];
-            const data = doc.data();
-            
-            // Fill the edit form
-            document.getElementById('docId').value = doc.id;
-            document.getElementById('editANumber').value = data.aNumber;
-            document.getElementById('editStatus').value = data.status;
-            
-            // Handle note section
-            const hasNote = data.hasNote;
-            editLeaveNoteCheckbox.checked = hasNote;
-            editNoteSection.classList.toggle('hidden', !hasNote);
-            
-            if (hasNote) {
-                document.getElementById('editReminderDate').value = data.reminderDate;
-                document.getElementById('editNoteText').value = data.note;
-                countWords(document.getElementById('editNoteText'), editWordCount);
-            } else {
-                document.getElementById('editReminderDate').value = '';
-                document.getElementById('editNoteText').value = '';
-                editWordCount.textContent = '0/10 palabras';
-            }
-            
-            searchResults.classList.remove('hidden');
-            
-        } catch (error) {
-            console.error("Error searching for the record:", error);
-            showMessage('Error searching for the record:', 'error');
-        }
-    });
-    
-    // Edit form submission
-    editForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        try {
-            const docId = document.getElementById('docId').value;
-            const aNumber = editANumberInput.value;
-            
-            // Validate A# format
-            if (!validateANumber(aNumber)) {
-                showMessage('The A# must have the format 123-123-123', 'error');
-                return;
-            }
-            
-            const status = document.getElementById('editStatus').value;
-            const hasNote = editLeaveNoteCheckbox.checked;
-            
-            let recordData = {
-                aNumber: aNumber,
-                status: status,
-                hasNote: hasNote,
-                updatedAt: serverTimestamp()
-            };
-            
-            if (hasNote) {
-                const reminderDate = document.getElementById('editReminderDate').value;
-                const note = document.getElementById('editNoteText').value.trim();
-                
-                if (!reminderDate) {
-                    showMessage('Por favor seleccione una fecha para el recordatorio', 'error');
-                    return;
-                }
-                
-                if (note === '') {
-                    showMessage('Por favor ingrese una nota', 'error');
-                    return;
-                }
-                
-                recordData.reminderDate = reminderDate;
-                recordData.note = note;
-            } else {
-                // Remove the note fields if they exist
-                recordData.reminderDate = null;
-                recordData.note = null;
-            }
-            
-            // Update document in Firestore
-            const docRef = doc(db, "registros", docId);
-            await updateDoc(docRef, recordData);
-            
-            // If there's a note/reminder, update or create Google Calendar event
-            if (hasNote) {
-                try {
-                    const eventTitle = `A#: ${aNumber} - ${status}`;
-                    const eventDescription = recordData.note;
-                    const eventDate = recordData.reminderDate;
-                    const eventTime = "09:00"; // Default time
-                    
-                    // Import the calendar functions
-                    const { addEventToCalendar, updateCalendarEvent } = await import('./calendar-integration.js');
-                    
-                    // Check if we already have an event ID
-                    const docSnapshot = await getDoc(doc(db, "registros", docId));
-                    const existingData = docSnapshot.data();
-                    
-                    if (existingData.calendarEventId) {
-                        // Update existing event
-                        await updateCalendarEvent(existingData.calendarEventId, eventTitle, eventDescription, eventDate, eventTime);
-                    } else {
-                        // Create new event
-                        const eventId = await addEventToCalendar(eventTitle, eventDescription, eventDate, eventTime);
-                        
-                        // Save the event ID
-                        await updateDoc(doc(db, "registros", docId), {
-                            calendarEventId: eventId
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error updating calendar event:", error);
-                    // Don't block the main flow if calendar fails
-                }
-            } else {
-                // If reminder was removed, delete the calendar event
-                try {
-                    const docSnapshot = await getDoc(doc(db, "registros", docId));
-                    const existingData = docSnapshot.data();
-                    
-                    if (existingData.calendarEventId) {
-                        // Import the calendar function
-                        const { deleteCalendarEvent } = await import('./calendar-integration.js');
-                        
-                        // Delete the event
-                        await deleteCalendarEvent(existingData.calendarEventId);
-                        
-                        // Remove the event ID
-                        await updateDoc(doc(db, "registros", docId), {
-                            calendarEventId: null
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error deleting calendar event:", error);
-                    // Don't block the main flow if calendar fails
-                }
-            }
-            
-            // Show success message
-            showMessage('Registration successfully updated', 'success');
-            
-            // Verificar si hay nuevos recordatorios para hoy
-            await checkReminders();
-            
-        } catch (error) {
-            console.error("Error updating the registry:", error);
-            showMessage('Error updating the registry:', 'error');
-        }
-    });
-    
-    // Delete record
-    deleteBtn.addEventListener('click', async function() {
-        if (confirm('¿Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.')) {
-            try {
-                const docId = document.getElementById('docId').value;
-                
-                // Before deleting the document, check if there's a calendar event to delete
-                try {
-                    const docSnapshot = await getDoc(doc(db, "registros", docId));
-                    const existingData = docSnapshot.data();
-                    
-                    if (existingData.calendarEventId) {
-                        // Import the calendar function
-                        const { deleteCalendarEvent } = await import('./calendar-integration.js');
-                        
-                        // Delete the event
-                        await deleteCalendarEvent(existingData.calendarEventId);
-                    }
-                } catch (error) {
-                    console.error("Error deleting calendar event:", error);
-                    // Don't block the main flow if calendar fails
-                }
-                
-                // Delete document from Firestore
-                const docRef = doc(db, "registros", docId);
-                await deleteDoc(docRef);
-                
-                // Hide search results
-                searchResults.classList.add('hidden');
-                document.getElementById('searchANumber').value = '';
-                
-                // Show success message
-                showMessage('Registro eliminado exitosamente', 'success');
-                
-                // Verificar si hay nuevos recordatorios para hoy
-                await checkReminders();
-                
-            } catch (error) {
-                console.error("Error al eliminar el registro:", error);
-                showMessage('Error al eliminar el registro', 'error');
-            }
-        }
-    });
-});
-
-// Helper function to validate A# format
-function validateANumber(aNumber) {
-    const regex = /^\d{3}-\d{3}-\d{3}$/;
-    return regex.test(aNumber);
-}
-
-// Helper function to format A# input
-function setupANumberInput(input) {
-    if (!input) return;
-    
-    input.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/[^\d]/g, ''); // Remove non-digits
-        
-        if (value.length > 9) {
-            value = value.slice(0, 9);
+            querySnapshot.forEach((doc) => {
+                results.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+        } else {
+            // Search in local clients (any partial match)
+            results = clients.filter(client => 
+                client.aNumber.includes(searchValue) || 
+                (client.note && client.note.toLowerCase().includes(searchValue.toLowerCase()))
+            );
         }
         
-        // Format as XXX-XXX-XXX
-        if (value.length > 0) {
-            value = value.match(new RegExp('.{1,3}', 'g')).join('-');
-        }
-        
-        e.target.value = value;
-    });
-}
-
-// Helper function to count words
-function countWords(textarea, countElement) {
-    const text = textarea.value.trim();
-    const words = text === '' ? [] : text.split(/\s+/);
-    const wordNum = words.length;
-    
-    countElement.textContent = `${wordNum}/10 palabras`;
-    
-    // Limit to 10 words
-    if (wordNum > 10) {
-        const limitedText = words.slice(0, 10).join(' ');
-        textarea.value = limitedText;
-        countElement.textContent = `10/10 palabras`;
+        // Display results
+        displaySearchResults(results);
+    } catch (error) {
+        console.error("Error searching clients:", error);
+        showMessage("Error searching clients: " + error.message, true);
     }
 }
+
+// Function to display search results
+function displaySearchResults(results) {
+    searchResults.innerHTML = '';
+    
+    if (results.length === 0) {
+        searchResults.innerHTML = '<p>No results found.</p>';
+        return;
+    }
+    
+    results.forEach(client => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'search-result-item';
+        resultItem.innerHTML = `
+            <p><strong>A#:</strong> ${client.aNumber}</p>
+            <p><strong>Status:</strong> ${client.status}</p>
+            <p><strong>Note:</strong> ${client.note || 'N/A'}</p>
+        `;
+        
+        resultItem.addEventListener('click', () => {
+            openEditModal(client.id);
+        });
+        
+        searchResults.appendChild(resultItem);
+    });
+}
+
+// Function to save a new client
+async function saveClient() {
+    // Validate A#
+    const aNumber = aNumberInput.value.trim();
+    if (!aNumber || !/^\d{3}-\d{3}-\d{3}$/.test(aNumber)) {
+        showMessage("Please enter a valid A# in 000-000-000 format", true);
+        return;
+    }
+    
+    // Check if A# already exists
+    const clientExists = clients.some(client => client.aNumber === aNumber);
+    if (clientExists) {
+        showMessage("A client with this A# already exists", true);
+        return;
+    }
+    
+    // Get status
+    const status = statusSelect.value;
+    
+    // Validate note if enabled
+    let note = null;
+    let reminderDate = null;
+    let reminderTime = null;
+    let eventId = null;
+    
+    if (hasNoteCheckbox.checked) {
+        note = noteInput.value.trim();
+        
+        // Validate word limit
+        const words = note.split(/\s+/);
+        if (note !== '' && words.length > 10) {
+            showMessage("Note cannot have more than 10 words", true);
+            return;
+        }
+        
+        // Validate date and time if there's a note
+        reminderDate = reminderDateInput.value;
+        reminderTime = reminderTimeInput.value;
+        
+        if (!reminderDate || !reminderTime) {
+            showMessage("Please enter date and time for the reminder", true);
+            return;
+        }
+        
+        // Create reminder in Google Calendar
+        try {
+            const reminderDateTime = `${reminderDate}T${reminderTime}:00`;
+            const calendarResponse = await createReminder(aNumber, note, reminderDateTime);
+            
+            if (!calendarResponse.success) {
+                showMessage(calendarResponse.message, true);
+                return;
+            }
+            
+            eventId = calendarResponse.eventId;
+        } catch (error) {
+            console.error("Error creating reminder:", error);
+            showMessage("Error creating reminder: " + error.message, true);
+            return;
+        }
+    }
+    
+    // Save client to Firebase
+    try {
+        const clientData = {
+            aNumber,
+            status,
+            note,
+            reminderDate,
+            reminderTime,
+            eventId,
+            createdAt: new Date().toISOString()
+        };
+        
+        await addDoc(clientsCollection, clientData);
+        
+        // Clear form
+        aNumberInput.value = '';
+        statusSelect.value = 'not drafted';
+        hasNoteCheckbox.checked = false;
+        noteSection.classList.add('hidden');
+        noteInput.value = '';
+        wordCountSpan.textContent = '0/10';
+        reminderDateInput.value = '';
+        reminderTimeInput.value = '';
+        
+        // Show success message
+        showMessage("Client saved successfully");
+        
+        // Reload clients
+        await loadClients();
+    } catch (error) {
+        console.error("Error saving client:", error);
+        showMessage("Error saving client: " + error.message, true);
+    }
+}
+
+// Function to update a client
+async function updateClient() {
+    if (!currentClientId) return;
+    
+    const client = clients.find(c => c.id === currentClientId);
+    if (!client) return;
+    
+    // Get updated data
+    const status = editStatusSelect.value;
+    
+    // Validate note if enabled
+    let note = null;
+    let reminderDate = null;
+    let reminderTime = null;
+    let eventId = client.eventId;
+    
+    if (editHasNoteCheckbox.checked) {
+        note = editNoteInput.value.trim();
+        
+        // Validate word limit
+        const words = note.split(/\s+/);
+        if (note !== '' && words.length > 10) {
+            showMessage("Note cannot have more than 10 words", true);
+            return;
+        }
+        
+        // Validate date and time if there's a note
+        reminderDate = editReminderDateInput.value;
+        reminderTime = editReminderTimeInput.value;
+        
+        if (!reminderDate || !reminderTime) {
+            showMessage("Please enter date and time for the reminder", true);
+            return;
+        }
+        
+        // Update or create reminder in Google Calendar
+        try {
+            const reminderDateTime = `${reminderDate}T${reminderTime}:00`;
+            let calendarResponse;
+            
+            if (eventId) {
+                // Update existing reminder
+                calendarResponse = await updateReminder(eventId, client.aNumber, note, reminderDateTime);
+            } else {
+                // Create new reminder
+                calendarResponse = await createReminder(client.aNumber, note, reminderDateTime);
+            }
+            
+            if (!calendarResponse.success) {
+                showMessage(calendarResponse.message, true);
+                return;
+            }
+            
+            eventId = calendarResponse.eventId;
+        } catch (error) {
+            console.error("Error updating reminder:", error);
+            showMessage("Error updating reminder: " + error.message, true);
+            return;
+        }
+    } else if (client.eventId) {
+        // Delete reminder if it exists and note is disabled
+        try {
+            const calendarResponse = await deleteReminder(client.eventId);
+            
+            if (!calendarResponse.success) {
+                showMessage(calendarResponse.message, true);
+                return;
+            }
+            
+            eventId = null;
+        } catch (error) {
+            console.error("Error deleting reminder:", error);
+            showMessage("Error deleting reminder: " + error.message, true);
+            return;
+        }
+    }
+    
+    // Update client in Firebase
+    try {
+        const docRef = doc(clientsCollection, currentClientId);
+        const clientData = {
+            status,
+            note,
+            reminderDate,
+            reminderTime,
+            eventId,
+            updatedAt: new Date().toISOString()
+        };
+        
+        await updateDoc(docRef, clientData);
+        
+        // Close modal
+        editModal.style.display = 'none';
+        
+        // Show success message
+        showMessage("Client updated successfully");
+        
+        // Reload clients
+        await loadClients();
+    } catch (error) {
+        console.error("Error updating client:", error);
+        showMessage("Error updating client: " + error.message, true);
+    }
+}
+
+// Function to delete a client
+async function deleteClient() {
+    if (!currentClientId) return;
+    
+    if (!confirm("Are you sure you want to delete this client?")) {
+        return;
+    }
+    
+    const client = clients.find(c => c.id === currentClientId);
+    if (!client) return;
+    
+    // Delete reminder from Google Calendar if it exists
+    if (client.eventId) {
+        try {
+            const calendarResponse = await deleteReminder(client.eventId);
+            
+            if (!calendarResponse.success) {
+                showMessage(calendarResponse.message, true);
+                return;
+            }
+        } catch (error) {
+            console.error("Error deleting reminder:", error);
+            showMessage("Error deleting reminder: " + error.message, true);
+            return;
+        }
+    }
+    
+    // Delete client from Firebase
+    try {
+        const docRef = doc(clientsCollection, currentClientId);
+        await deleteDoc(docRef);
+        
+        // Close modal
+        editModal.style.display = 'none';
+        
+        // Show success message
+        showMessage("Client deleted successfully");
+        
+        // Reload clients
+        await loadClients();
+    } catch (error) {
+        console.error("Error deleting client:", error);
+        showMessage("Error deleting client: " + error.message, true);
+    }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Format A# automatically
+    aNumberInput.addEventListener('input', () => formatANumber(aNumberInput));
+    
+    // Also format A# in search input
+    searchInput.addEventListener('input', () => formatANumber(searchInput));
+    
+    // Count words in note
+    noteInput.addEventListener('input', () => countWords(noteInput, wordCountSpan));
+    editNoteInput.addEventListener('input', () => countWords(editNoteInput, editWordCountSpan));
+    
+    // Show/hide note section
+    hasNoteCheckbox.addEventListener('change', () => {
+        if (hasNoteCheckbox.checked) {
+            noteSection.classList.remove('hidden');
+        } else {
+            noteSection.classList.add('hidden');
+        }
+    });
+    
+    editHasNoteCheckbox.addEventListener('change', () => {
+        if (editHasNoteCheckbox.checked) {
+            editNoteSection.classList.remove('hidden');
+        } else {
+            editNoteSection.classList.add('hidden');
+        }
+    });
+    
+    // Save client
+    saveButton.addEventListener('click', saveClient);
+    
+    // Search clients
+    searchButton.addEventListener('click', searchClients);
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            searchClients();
+        }
+    });
+    
+    // Edit modal
+    closeModalButton.addEventListener('click', () => {
+        editModal.style.display = 'none';
+    });
+    
+    // Close modal when clicking outside the content
+    window.addEventListener('click', (e) => {
+        if (e.target === editModal) {
+            editModal.style.display = 'none';
+        }
+    });
+    
+    // Update and delete client
+    updateButton.addEventListener('click', updateClient);
+    deleteButton.addEventListener('click', deleteClient);
+    
+    // Load clients on startup
+    loadClients();
+});
+

@@ -234,3 +234,15 @@ header p {
         font-size: 14px;
     }
 }
+
+.btn-open, .btn-download {
+    text-decoration: none;
+}
+
+.btn-open {
+    background-color: #4d4d4d;
+    color: white;
+}
+.btn-open:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
