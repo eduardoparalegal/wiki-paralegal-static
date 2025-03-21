@@ -14,21 +14,35 @@
         <div class="main-content">
             <header>
                 <div class="header-content">
-                    
                     <h1>All Documentation</h1>
                     <p>Find all updated resources here. in word or pdf format..</p>
                     
-                    <!-- Search Bar -->
-                    <div class="search-container">
-                        <input type="text" id="search-input" placeholder="Search documents...">
-                        <button id="search-button"><i class="fas fa-search"></i></button>
+                    <!-- Search and Filter Controls -->
+                    <div class="controls-container">
+                        <!-- Search Bar -->
+                        <div class="search-container">
+                            <input type="text" id="search-input" placeholder="Search documents...">
+                            <button id="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                        
+                        <!-- Sort Dropdown -->
+                        <div class="sort-container">
+                            <button id="sort-button" class="sort-button">
+                                <i class="fas fa-sort-amount-down"></i> Sort
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div id="sort-dropdown" class="sort-dropdown">
+                                <a href="#" data-sort="newest" class="active">Newest First</a>
+                                <a href="#" data-sort="oldest">Oldest First</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
             <div class="documentation-list" id="documentation-list">
                 <!-- Document 1 -->
-                <div class="document-card" data-title="Video Motion standard template" data-description="Standard template for video motion requests.">
+                <div class="document-card" data-title="Video Motion standard template" data-description="Standard template for video motion requests." data-date="03/10/2025">
                     <h3>Video Motion standard template</h3>
                     <p>Last update: 03/10/2025.</p>
                     <div class="card-actions">
@@ -37,7 +51,7 @@
                 </div>
 
                 <!-- Document 2 -->
-                <div class="document-card" data-title="Telephonic motion Template" data-description="Template for telephonic motion requests.">
+                <div class="document-card" data-title="Telephonic motion Template" data-description="Template for telephonic motion requests." data-date="03/10/2025">
                     <h3>Telephonic motion Template</h3>
                     <p>Last update: 03/10/2025.</p>
                     <div class="card-actions">
@@ -46,7 +60,7 @@
                 </div>
 
                 <!-- Document 3 -->
-                <div class="document-card" data-title="Video Motion Respondent Template" data-description="Template for video motion respondents.">
+                <div class="document-card" data-title="Video Motion Respondent Template" data-description="Template for video motion respondents." data-date="03/10/2025">
                     <h3>Video Motion Respondent Template</h3>
                     <p>Last update: 03/10/2025.</p>
                     <div class="card-actions">
@@ -55,7 +69,7 @@
                 </div>
 
                 <!-- Document 4 -->
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions." data-date="03/10/2025">
                     <h3>Video Motion Niloufar Template</h3>
                     <p>Last update: 03/10/2025.</p>
                     <div class="card-actions">
@@ -64,7 +78,7 @@
                 </div>
 
                 <!-- Document 5 -->
-                <div class="document-card" data-title="Video Motion Dallas Template" data-description="Template for Dallas court video motions.">
+                <div class="document-card" data-title="Video Motion Dallas Template" data-description="Template for Dallas court video motions." data-date="03/10/2025">
                     <h3>Video Motion Dallas Template</h3>
                     <p>Last update: 03/10/2025.</p>
                     <div class="card-actions">
@@ -72,7 +86,7 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="Motion to Substitute YULI" data-description="Substitution motion for YULI." data-date="03/16/2025">
                     <h3>Motion to Substitute YULI</h3>
                     <p>Last update: 03/16/2025.</p>
                     <div class="card-actions">
@@ -80,15 +94,15 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="Video motion YULILAW TEMPLATE" data-description="YULILAW template for video motions." data-date="03/16/2025">
                     <h3>Video motion YULILAW TEMPLATE</h3>
                     <p>Last update: 03/16/2025.</p>
                     <div class="card-actions">
-                        <a href="https://docs.google.com/document/d/1sZLLMhXIEvdxfi_72ouuW7EdHEHMWfy8/export?format=docx                        " class="btn btn-download" data-document-id="legal-video-formats">Download</a>
+                        <a href="https://docs.google.com/document/d/1sZLLMhXIEvdxfi_72ouuW7EdHEHMWfy8/export?format=docx" class="btn btn-download" data-document-id="legal-video-formats">Download</a>
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="client consent for substitution YULI" data-description="Client consent form for YULI substitution." data-date="03/16/2025">
                     <h3>client consent for substitution YULI</h3>
                     <p>Last update: 03/16/2025.</p>
                     <div class="card-actions">
@@ -96,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="Motion to Substitute YULI COMPLETE" data-description="Complete motion to substitute for YULI." data-date="03/20/2025">
                     <h3>Motion to Substitute YULI COMPLETE</h3>
                     <p>Last update: 03/20/2025.</p>
                     <div class="card-actions">
@@ -104,7 +118,7 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="E28 Example" data-description="Example document for E28." data-date="03/20/2025">
                     <h3>E28 Example</h3>
                     <p>Last update: 03/20/2025.</p>
                     <div class="card-actions">
@@ -112,7 +126,7 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
+                <div class="document-card" data-title="Motion-to-Substitute-YULI-WITH-RIDERS" data-description="Motion to substitute YULI with riders." data-date="03/20/2025">
                     <h3>Motion-to-Substitute-YULI-WITH-RIDERS</h3>
                     <p>Last update: 03/20/2025.</p>
                     <div class="card-actions">
@@ -120,15 +134,7 @@
                     </div>
                 </div>
 
-                <div class="document-card" data-title="Video Motion Niloufar Template" data-description="Niloufar specialized template for video motions.">
-                    <h3>Motion-to-Substitute-YULI-WITH-RIDERS</h3>
-                    <p>Last update: 03/20/2025.</p>
-                    <div class="card-actions">
-                        <a href="https://docs.google.com/document/d/1JjpRsokKIkM4yGpejFYk_ceZsHpsYfrF/export?format=docx" class="btn btn-download" data-document-id="legal-video-formats">Download</a>
-                    </div>
-                </div>
-
-                <div class="document-card">
+                <div class="document-card" data-title="Motion-to-Substitute-YULI-IJ-FLOYD" data-description="Motion to substitute YULI IJ FLOYD." data-date="03/20/2025">
                     <h3>Motion-to-Substitute-YULI-IJ-FLOYD</h3>
                     <p>Last update: 03/20/2025.</p>
                     <div class="card-actions">
@@ -136,10 +142,17 @@
                         <a href="https://docs.google.com/document/d/1m3HsQ2zoDhtt3hnIeTf70LpNcEb4B8EM/export?format=docx" class="btn btn-download" data-document-id="legal-video-formats" style="text-decoration: none;">Download</a>
                     </div>
                 </div>
+
+                <div class="document-card" data-title="Motion-to-Substitute-YULI-IJ-FLOYD" data-description="Motion to substitute YULI IJ FLOYD." data-date="03/20/2025">
+                    <h3>VIDEO-MOTIONS-REQUIRED-OR-NOT-PER-COURT-HEARINGS</h3>
+                    <p>Last update: 03/21/2025.</p>
+                    <div class="card-actions">
+                        <a href="./NeedVideoMotion.html" class="btn btn-open" data-document-id="legal-video-formats" style="text-decoration: none;">Open</a>
+                        <a href="https://drive.google.com/uc?export=download&id=1e_YPG9wuTvSsk44lqFsOFlSnMcqc0wqz" class="btn btn-download" data-document-id="legal-video-formats" style="text-decoration: none;">Download</a>
+                    </div>
+                </div>
                 
             </div>
-            
-            
             
             <!-- No Results Message -->
             <div id="no-results" class="no-results" style="display: none;">

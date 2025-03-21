@@ -6,24 +6,56 @@ document.addEventListener('DOMContentLoaded', function() {
     const documentationList = document.getElementById('documentation-list');
     const noResultsMessage = document.getElementById('no-results');
     const downloadButtons = document.querySelectorAll('.btn-download');
+    const sortButton = document.getElementById('sort-button');
+    const sortDropdown = document.getElementById('sort-dropdown');
+    const sortOptions = document.querySelectorAll('.sort-dropdown a');
     
-    // Initialize an array to store document data for searching
+    // Initialize an array to store document data for searching and sorting
     const documents = [];
+    
+    // Parse date string in format MM/DD/YYYY to Date object
+    function parseDate(dateStr) {
+        if (!dateStr) return null;
+        const parts = dateStr.replace('.', '').split('/');
+        // MM/DD/YYYY format
+        if (parts.length === 3) {
+            return new Date(parts[2], parts[0] - 1, parts[1]);
+        }
+        return null;
+    }
     
     // Populate the documents array with data from the HTML
     documentCards.forEach(card => {
-        // Obtener el título directamente del contenido HTML para asegurar que capturamos el texto real mostrado
         const titleElement = card.querySelector('h3') || card.querySelector('h2');
         const title = titleElement ? titleElement.textContent : '';
+        const dateElement = card.querySelector('p');
+        let dateStr = '';
+        let dateObj = null;
         
-        // Obtener directamente el contenido completo visible de la tarjeta para la descripción
+        if (dateElement) {
+            const dateMatch = dateElement.textContent.match(/(\d{2}\/\d{2}\/\d{4})/);
+            if (dateMatch) {
+                dateStr = dateMatch[0];
+                dateObj = parseDate(dateStr);
+            }
+        }
+        
+        // Also look for date in data attribute
+        const dataDate = card.getAttribute('data-date');
+        if (dataDate && !dateObj) {
+            dateStr = dataDate;
+            dateObj = parseDate(dataDate);
+        }
+        
         const description = card.textContent || '';
         
         documents.push({
             element: card,
             title: title.toLowerCase(),
             description: description.toLowerCase(),
-            originalTitle: title // Guardamos el título original para referencia
+            dateStr: dateStr,
+            date: dateObj,
+            originalTitle: title
         });
     });
     
@@ -73,10 +105,75 @@ document.addEventListener('DOMContentLoaded', function() {
         return doc.title.includes(keyword) || doc.description.includes(keyword);
     }
     
+    // Sort dropdown toggle
+    sortButton.addEventListener('click', function() {
+        sortDropdown.style.display = sortDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!sortButton.contains(e.target) && !sortDropdown.contains(e.target)) {
+            sortDropdown.style.display = 'none';
+        }
+    });
+    
+    // Handle sort option selection
+    sortOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active class
+            sortOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update button text
+            const sortType = this.getAttribute('data-sort');
+            if (sortType === 'newest') {
+                sortButton.innerHTML = '<i class="fas fa-sort-amount-down"></i> Newest First <i class="fas fa-chevron-down"></i>';
+            } else {
+                sortButton.innerHTML = '<i class="fas fa-sort-amount-up"></i> Oldest First <i class="fas fa-chevron-down"></i>';
+            }
+            
+            // Perform sorting
+            sortDocuments(sortType);
+            
+            // Close dropdown
+            sortDropdown.style.display = 'none';
+        });
+    });
+    
+    // Function to sort documents based on date
+    function sortDocuments(sortType) {
+        // Sort documents array
+        const sortedDocs = [...documents].sort((a, b) => {
+            // Handle missing dates - put them at the bottom
+            if (!a.date && !b.date) return 0;
+            if (!a.date) return 1;
+            if (!b.date) return -1;
+            
+            // Newest first (default)
+            if (sortType === 'newest') {
+                return b.date - a.date;
+            } 
+            // Oldest first
+            else {
+                return a.date - b.date;
+            }
+        });
+        
+        // Reorder DOM elements
+        const fragment = document.createDocumentFragment();
+        sortedDocs.forEach(doc => {
+            fragment.appendChild(doc.element);
+        });
+        
+        documentationList.innerHTML = '';
+        documentationList.appendChild(fragment);
+    }
+    
     // Function to perform search with similarity matching
     function performSearch(query) {
         query = query.toLowerCase().trim();
-        console.log("Searching for:", query); // Para depuración
         
         // If the query is empty, show all documents
         if (query === '') {
@@ -90,15 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Split the query into keywords
         const keywords = query.split(/\s+/);
         
-        // Primera comprobación: imprimir todos los documentos para depuración
-        console.log("Available documents:", documents.map(d => d.originalTitle));
-        
         // First, try exact matching with individual keywords
         let exactMatches = documents.filter(doc => 
             keywords.some(keyword => containsKeyword(doc, keyword))
         );
-        
-        console.log("Exact matches:", exactMatches.map(d => d.originalTitle)); // Para depuración
         
         let hasResults = false;
         
@@ -114,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             // Otherwise, use similarity matching
-            const similarityThreshold = 0.3; // Bajamos el umbral para mayor tolerancia
+            const similarityThreshold = 0.3;
             const results = [];
             
             documents.forEach(doc => {
@@ -131,14 +223,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Check individual keywords
                 keywords.forEach(keyword => {
-                    if (keyword.length > 1) { // Bajamos a 2+ caracteres para mayor sensibilidad
+                    if (keyword.length > 1) {
                         const keywordTitleScore = similarityScore(keyword, doc.title);
                         const keywordDescScore = similarityScore(keyword, doc.description);
                         bestScore = Math.max(bestScore, keywordTitleScore, keywordDescScore);
                     }
                 });
-                
-                console.log(`Score for "${doc.originalTitle}": ${bestScore}`); // Para depuración
                 
                 // If the document's best score is above the threshold, include it
                 if (bestScore >= similarityThreshold) {
@@ -151,8 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Sort results by score (descending)
             results.sort((a, b) => b.score - a.score);
-            
-            console.log("Similarity results:", results.map(r => `${r.doc.originalTitle} (${r.score})`)); // Para depuración
             
             // Display the results
             documents.forEach(doc => {
@@ -193,14 +281,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Download button functionality
     downloadButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-            // The default link behavior will handle the download
-            // This is just for any additional tracking or analytics
             const card = this.closest('.document-card');
             const title = card.querySelector('h3') ? card.querySelector('h3').textContent : 
                         (card.querySelector('h2') ? card.querySelector('h2').textContent : 'Documento');
             console.log(`Downloading document: ${title}`);
         });
     });
+    
+    // Sort documents by newest first (default)
+    sortDocuments('newest');
     
     // Focus on search input when page loads for better UX
     searchInput.focus();

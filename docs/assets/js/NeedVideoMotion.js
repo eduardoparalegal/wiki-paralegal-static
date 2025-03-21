@@ -36,26 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
             individual: "NEVER",
             notice: null,
             copyText: "For Judge Fernandez in El Paso:\nMaster Motion: NO\nIndividual Motion: NEVER"
-        },
-        {
-            name: "Diaz",
-            fullName: "IJ Diaz",
-            location: "El Paso",
-            master: "NO",
-            individual: "Look at case notice",
-            notice: "Look at case notice",
-            copyText: "For Judge Diaz in El Paso:\nMaster Motion: NO\nIndividual Motion: Please check the case notice for specific requirements."
-        },
-        {
-            name: "Diaz",
-            fullName: "IJ Diaz",
-            location: "El Paso",
-            master: "NO",
-            individual: "Look at case notice",
-            notice: "Look at case notice",
-            copyText: "For Judge Diaz in El Paso:\nMaster Motion: NO\nIndividual Motion: Please check the case notice for specific requirements."
-        },
+        }
     ];
+    
+    // Remove duplicate entries (the original data had Diaz repeated three times)
     
     // DOM Elements
     const searchInput = document.getElementById('judgeSearch');
@@ -70,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const noticeText = document.getElementById('noticeText');
     const copyText = document.getElementById('copyText');
     const copyButton = document.getElementById('copyButton');
+    
+    // Add focus to search input on page load
+    searchInput.focus();
     
     // Search function
     function searchJudge() {
@@ -93,6 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             resultContainer.classList.add('hidden');
             noResultContainer.classList.remove('hidden');
+            
+            // Auto focus back to search after no results
+            setTimeout(() => {
+                searchInput.focus();
+                searchInput.select();
+            }, 100);
         }
     }
     
@@ -130,8 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set notice text if applicable
         if (judge.notice) {
             noticeText.textContent = judge.notice;
+            noticeContainer.classList.remove('hidden');
             noticeText.classList.remove('hidden');
         } else {
+            noticeContainer.classList.add('hidden');
             noticeText.classList.add('hidden');
         }
         
@@ -148,6 +143,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Add animated feedback for button clicks
+    searchButton.addEventListener('mousedown', function() {
+        this.style.transform = 'scale(0.97)';
+    });
+    
+    searchButton.addEventListener('mouseup', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
+    searchButton.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
     // Copy to clipboard functionality
     copyButton.addEventListener('click', function() {
         const textToCopy = copyText.textContent;
@@ -155,31 +163,58 @@ document.addEventListener('DOMContentLoaded', function() {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
-                    // Show temporary success message
+                    // Show temporary success message with animation
                     const originalText = copyButton.textContent;
                     copyButton.textContent = 'Copied!';
+                    copyButton.style.backgroundColor = '#10B981'; // Success green
                     setTimeout(() => {
                         copyButton.textContent = originalText;
+                        copyButton.style.backgroundColor = '#2d3748'; // Reset color
                     }, 2000);
                 })
                 .catch(err => {
                     console.error('Failed to copy: ', err);
+                    // Show error message
+                    const originalText = copyButton.textContent;
+                    copyButton.textContent = 'Error!';
+                    copyButton.style.backgroundColor = '#EF4444'; // Error red
+                    setTimeout(() => {
+                        copyButton.textContent = originalText;
+                        copyButton.style.backgroundColor = '#2d3748'; // Reset color
+                    }, 2000);
                 });
         } else {
             // Fallback for browsers that don't support clipboard API
             const textarea = document.createElement('textarea');
             textarea.value = textToCopy;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
             
-            // Show temporary success message
-            const originalText = copyButton.textContent;
-            copyButton.textContent = 'Copied!';
-            setTimeout(() => {
-                copyButton.textContent = originalText;
-            }, 2000);
+            try {
+                document.execCommand('copy');
+                // Show success message
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                copyButton.style.backgroundColor = '#10B981'; // Success green
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                    copyButton.style.backgroundColor = '#2d3748'; // Reset color
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                // Show error message
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Error!';
+                copyButton.style.backgroundColor = '#EF4444'; // Error red
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                    copyButton.style.backgroundColor = '#2d3748'; // Reset color
+                }, 2000);
+            }
+            
+            document.body.removeChild(textarea);
         }
     });
 });
