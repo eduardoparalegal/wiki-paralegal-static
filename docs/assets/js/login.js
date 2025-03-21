@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
         { username: 'eduardoparalegal@gmail.com', password: 'bNviq8nEcc' },
         { username: 'davinaparalegal@gmail.com', password: 'xUqf85i6ks' },
         { username: 'danielparalegal@gmail.com', password: 'R9x9HrRTQL' },
-        { username: 'ashleyparalegal@gmail.com', password: 'L4JQw9ExCl' }
+        { username: 'adminparalegal@gmail.com', password: 'L4JQw9ExCl' },
+        
     ];
 
     const loginForm = document.getElementById('loginForm');
