@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     const courtsTableBody = document.getElementById('courtsTableBody');
     const searchInput = document.getElementById('searchInput');
 
@@ -420,40 +420,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ];
 
-    function renderCourts(courts) {
-        courtsTableBody.innerHTML = '';
-        courts.forEach(court => {
-            const row = document.createElement('tr');
-            
-            row.innerHTML = `
-                <td>${court.state}</td>
-                <td>${court.city}</td>
-                <td>${court.courtName}</td>
-                <td>${court.phoneNumber}</td>
-                <td>
-                    <button class="call-btn" onclick="window.open('${court.skypeLink}', '_blank')">
-                        <i class="fas fa-phone"></i> Call
-                    </button>
-                </td>
-            `;
-            
-            courtsTableBody.appendChild(row);
-        });
-    }
-
-    function searchCourts() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filteredCourts = courtData.filter(court => 
-            court.state.toLowerCase().includes(searchTerm) ||
-            court.city.toLowerCase().includes(searchTerm) ||
-            court.phoneNumber.includes(searchTerm)
-        );
-        renderCourts(filteredCourts);
-    }
-
-    // Initial render
-    renderCourts(courtData);
-
-    // Add search event listener
-    searchInput.addEventListener('input', searchCourts);
-});
+    
+        function renderCourts(courts) {
+            courtsTableBody.innerHTML = '';
+            courts.forEach(court => {
+                const row = document.createElement('tr');
+                
+                // Crear celdas con el contenido
+                const stateCell = document.createElement('td');
+                stateCell.textContent = court.state;
+                checkAndApplyStyles(stateCell);
+                
+                const cityCell = document.createElement('td');
+                cityCell.textContent = court.city;
+                checkAndApplyStyles(cityCell);
+                
+                const courtNameCell = document.createElement('td');
+                if (court.courtName === "Unavailable") {
+                    courtNameCell.textContent = court.courtName;
+                    courtNameCell.classList.add('unavailable');
+                } else {
+                    courtNameCell.textContent = court.courtName;
+                    checkAndApplyStyles(courtNameCell);
+                }
+                
+                const phoneCell = document.createElement('td');
+                phoneCell.textContent = court.phoneNumber;
+                
+                const callCell = document.createElement('td');
+                const callButton = document.createElement('button');
+                callButton.className = 'call-btn';
+                callButton.innerHTML = '<i class="fas fa-phone"></i> Call';
+                callButton.onclick = function() {
+                    window.open(court.skypeLink, '_blank');
+                };
+                callCell.appendChild(callButton);
+                
+                // Añadir celdas a la fila
+                row.appendChild(stateCell);
+                row.appendChild(cityCell);
+                row.appendChild(courtNameCell);
+                row.appendChild(phoneCell);
+                row.appendChild(callCell);
+                
+                courtsTableBody.appendChild(row);
+            });
+        }
+        
+        // Función para verificar y aplicar estilos a elementos que contienen NO o YES
+        function checkAndApplyStyles(element) {
+            const text = element.textContent;
+            if (text.includes('NO')) {
+                element.style.color = '#4CAF50'; // Verde para textos con "NO"
+            } else if (text.includes('YES')) {
+                element.style.color = '#FFEB3B'; // Amarillo para textos con "YES"
+            }
+        }
+    
+        function searchCourts() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredCourts = courtData.filter(court => 
+                court.state.toLowerCase().includes(searchTerm) ||
+                court.city.toLowerCase().includes(searchTerm) ||
+                court.phoneNumber.includes(searchTerm)
+            );
+            renderCourts(filteredCourts);
+        }
+    
+        // Initial render
+        renderCourts(courtData);
+    
+        // Add search event listener
+        searchInput.addEventListener('input', searchCourts);
+    });

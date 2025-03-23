@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sortDropdown = document.getElementById('sort-dropdown');
     const sortOptions = document.querySelectorAll('.sort-dropdown a');
     
+    
     // Initialize an array to store document data for searching and sorting
     const documents = [];
     

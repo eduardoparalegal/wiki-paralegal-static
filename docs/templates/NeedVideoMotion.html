@@ -1,59 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Need Video Motion Check</title>
+    <title>Judge Search Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/NeedVideoMotion.css">
-    <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Need Video Motion Check</h1>
+        <button id="theme-toggle-btn">
+            <i class="fas fa-sun" id="theme-icon-light"></i>
+            <i class="fas fa-moon" id="theme-icon-dark" style="display: none;"></i>
+        </button>
         
+        <h1>Judge Search Tool</h1>
+        
+        <!-- Search Section -->
         <div class="search-container">
             <input type="text" id="judgeSearch" placeholder="Enter judge name...">
             <button id="searchButton">Search</button>
         </div>
         
+        <!-- Results Section -->
         <div id="resultContainer" class="hidden">
             <div class="result-header">
-                <h2 id="judgeName">Judge Name</h2>
-                <p id="locationText">El Paso</p>
+                <h2 id="judgeName"></h2>
+                <p id="locationText"></p>
             </div>
             
             <div class="result-table">
                 <div class="table-header">
-                    <div class="cell">Master</div>
-                    <div class="cell">Individual</div>
+                    <div class="cell">Master Calendar</div>
+                    <div class="cell">Individual Calendar</div>
                 </div>
                 <div class="table-row">
-                    <div class="cell" id="masterResult">No</div>
-                    <div class="cell" id="individualResult">Yes</div>
+                    <div class="cell" id="masterResult"></div>
+                    <div class="cell" id="individualResult"></div>
                 </div>
             </div>
             
-            <div class="notice-container" id="noticeContainer">
-                <p id="noticeText" class="hidden">Look at case notice</p>
+            <div id="noticeContainer" class="notice-container hidden">
+                <div id="noticeText"></div>
             </div>
             
             <div class="copy-container">
                 <h3>Copy Text</h3>
-                <div class="copy-box" id="copyBox">
-                    <p id="copyText"></p>
-                </div>
+                <div id="copyText" class="copy-box"></div>
                 <button id="copyButton">Copy to Clipboard</button>
             </div>
         </div>
         
+        <!-- No Results Section -->
         <div id="noResultContainer" class="hidden">
-            <p>No judge found with that name. Please try again.</p>
+            <p>No judge found with that name. Please try another search.</p>
         </div>
     </div>
-    
+
     <script src="../assets/js/NeedVideoMotion.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
 </body>
 </html>

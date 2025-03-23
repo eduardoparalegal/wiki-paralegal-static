@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
         { username: 'davinaparalegal@gmail.com', password: 'xUqf85i6ks' },
         { username: 'danielparalegal@gmail.com', password: 'R9x9HrRTQL' },
         { username: 'adminparalegal@gmail.com', password: 'L4JQw9ExCl' },
-        
     ];
 
     const loginForm = document.getElementById('loginForm');
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const password = document.getElementById('password').value;
         
         if (!username || !password) {
-            errorDiv.textContent = 'Please fill in all fields';
+            errorDiv.textContent = 'Por favor, completa todos los campos';
             return;
         }
 
@@ -35,9 +34,12 @@ document.addEventListener('DOMContentLoaded', function() {
             errorDiv.textContent = '';
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('currentUser', username);
-            window.location.href = 'templates/FirstSteps.html'; // Ruta corregida
+            // Guardar el tema actual para mantenerlo en la siguiente página
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            localStorage.setItem('theme', currentTheme || 'light');
+            window.location.href = 'templates/FirstSteps.html';
         } else {
-            errorDiv.textContent = 'Incorrect username or password';
+            errorDiv.textContent = 'Usuario o contraseña incorrectos';
             document.getElementById('password').value = '';
             return false;
         }

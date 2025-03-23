@@ -6,10 +6,56 @@
     font-family: 'Inter', sans-serif;
 }
 
+:root {
+    /* Light Theme Variables */
+    --background-color: #ffffff;
+    --container-bg: #e3e8ee;
+    --text-color: #1a1f36;
+    --secondary-text: #697386;
+    --primary-color: #5469d4;
+    --dark-primary: #212d63;
+    --light-primary: #7fd3ed;
+    --accent-color: #7b92ff;
+    --input-bg: #ffffff;
+    --table-header-bg: #e3e8ee;
+    --table-row-bg: #ffffff;
+    --table-border: #e3e8ee;
+    --button-bg: #5469d4;
+    --button-hover: #3a4987;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+    --result-no-color: #5469d4;  /* Blue */
+    --result-yes-color: #facc15; /* Yellow */
+    --result-never-color: #f87171; /* Red */
+    --result-unavailable-color: #697386; /* Gray secondary */
+}
+
+[data-theme="dark"] {
+    /* Dark Theme Variables */
+    --background-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --secondary-text: #a0a0a0;
+    --primary-color: #7b92ff;
+    --dark-primary: #3a4987;
+    --light-primary: #7fd3ed;
+    --accent-color: #5469d4;
+    --input-bg: #2c2c2c;
+    --table-header-bg: #2c2c2c;
+    --table-row-bg: #1e1e1e;
+    --table-border: #2c2c2c;
+    --button-bg: #3a4987;
+    --button-hover: #212d63;
+    --box-shadow: rgba(0, 0, 0, 0.5);
+    --result-no-color: #4ade80;  /* Green */
+    --result-yes-color: #facc15; /* Yellow */
+    --result-never-color: #f87171; /* Red */
+    --result-unavailable-color: #697386; /* Gray secondary */
+}
+
 body {
-    background-color: #0a0a0a;
+    background-color: var(--background-color);
     padding: 20px;
-    color: #f8f8f8;
+    color: var(--text-color);
     line-height: 1.6;
     display: flex;
     justify-content: center;
@@ -21,48 +67,73 @@ body {
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
-    background-color: #121212;
+    background-color: var(--container-bg);
     border-radius: 12px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px var(--box-shadow);
+    position: relative;
 }
 
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #ffffff;
+    color: var(--text-color);
     font-weight: 600;
     letter-spacing: 0.5px;
     font-size: 28px;
+}
+
+/* Theme Toggle Button */
+#theme-toggle-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px var(--box-shadow);
+    transition: background-color 0.3s;
+}
+
+#theme-toggle-btn:hover {
+    background-color: var(--dark-primary);
 }
 
 /* Search Styles */
 .search-container {
     display: flex;
     margin-bottom: 35px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--box-shadow);
     border-radius: 8px;
     overflow: hidden;
 }
 
-#judgeSearch {
+#judgeSearch, #searchInput {
     flex: 1;
     padding: 14px 18px;
     border: none;
     font-size: 16px;
-    background-color: #1e1e1e;
-    color: #ffffff;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     transition: all 0.3s ease;
 }
 
-#judgeSearch:focus {
+#judgeSearch:focus, #searchInput:focus {
     outline: none;
-    background-color: #252525;
+    background-color: var(--input-bg);
+    box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 #searchButton {
     padding: 14px 22px;
-    background-color: #2d3748;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     cursor: pointer;
@@ -72,7 +143,7 @@ h1 {
 }
 
 #searchButton:hover {
-    background-color: #1a202c;
+    background-color: var(--button-hover);
 }
 
 /* Results Styles */
@@ -84,67 +155,72 @@ h1 {
 #judgeName {
     font-size: 24px;
     margin-bottom: 5px;
-    color: #ffffff;
+    color: var(--text-color);
     font-weight: 600;
 }
 
 #locationText {
-    color: #b3b3b3;
+    color: var(--secondary-text);
     font-size: 16px;
     font-weight: 300;
 }
 
-.result-table {
+.result-table, .table-container table {
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--box-shadow);
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.table-header {
+.table-header, thead tr {
     display: flex;
-    background-color: #1e1e1e;
+    background-color: var(--table-header-bg);
     font-weight: 600;
 }
 
-.table-row {
+.table-row, tbody tr {
     display: flex;
+    background-color: var(--table-row-bg);
 }
 
-.cell {
+.cell, th, td {
     flex: 1;
     padding: 16px;
     text-align: center;
     transition: all 0.2s ease;
+    color: var(--text-color);
 }
 
-.table-header .cell {
-    border-bottom: 1px solid #333;
+.table-header .cell, th {
+    border-bottom: 1px solid var(--table-border);
 }
 
 /* Result Colors */
-.result-no {
-    background-color: #1e1e1e;
-    color: #4ade80; /* Bright green */
+.result-no, td:contains("NO"), td.result-no {
+    color: var(--result-no-color) !important; /* Green for dark mode */
     font-weight: 600;
 }
 
-.result-yes {
-    background-color: #1e1e1e;
-    color: #facc15; /* Bright yellow */
+.result-yes, td:contains("YES"), td.result-yes {
+    color: var(--result-yes-color) !important; /* Yellow */
     font-weight: 600;
 }
 
-.result-never {
-    background-color: #1e1e1e;
-    color: #f87171; /* Bright red */
+.result-never, td.result-never {
+    color: var(--result-never-color) !important; /* Red */
     font-weight: 600;
+}
+
+.result-unavailable, td.result-unavailable {
+    color: var(--result-unavailable-color) !important; /* Gray */
+    font-style: italic;
 }
 
 .result-notice {
-    background-color: #1e1e1e;
     font-style: italic;
-    color: #ffffff;
+    color: var(--text-color);
 }
 
 /* Notice Container */
@@ -155,11 +231,11 @@ h1 {
 
 #noticeText {
     padding: 14px;
-    background-color: #1e1e1e;
+    background-color: var(--container-bg);
     border-radius: 8px;
     font-style: italic;
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 /* Copy Box Styles */
@@ -169,7 +245,7 @@ h1 {
 
 .copy-container h3 {
     margin-bottom: 12px;
-    color: #ffffff;
+    color: var(--text-color);
     font-weight: 500;
     font-size: 18px;
 }
@@ -177,17 +253,17 @@ h1 {
 .copy-box {
     border-radius: 8px;
     padding: 16px;
-    background-color: #1e1e1e;
+    background-color: var(--container-bg);
     min-height: 100px;
     margin-bottom: 15px;
-    color: #e2e2e2;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    box-shadow: 0 4px 12px var(--box-shadow);
     white-space: pre-line;
 }
 
 #copyButton {
     padding: 12px 18px;
-    background-color: #2d3748;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     border-radius: 6px;
@@ -197,11 +273,11 @@ h1 {
     transition: all 0.3s;
     display: block;
     margin-left: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 #copyButton:hover {
-    background-color: #1a202c;
+    background-color: var(--button-hover);
     transform: translateY(-2px);
 }
 
@@ -212,20 +288,79 @@ h1 {
 /* No Results */
 #noResultContainer {
     text-align: center;
-    background-color: #1e1e1e;
+    background-color: var(--container-bg);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--box-shadow);
 }
 
 #noResultContainer p {
-    color: #b3b3b3;
+    color: var(--secondary-text);
     font-size: 16px;
 }
 
 /* Utility Classes */
 .hidden {
     display: none;
+}
+
+/* Table styles for the court directory */
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+#courtsTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px var(--box-shadow);
+}
+
+#courtsTable th {
+    background-color: var(--table-header-bg);
+    color: var(--text-color);
+    font-weight: 600;
+    padding: 16px;
+    text-align: left;
+}
+
+#courtsTable td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--table-border);
+    color: var(--text-color);
+}
+
+#courtsTable tbody tr {
+    background-color: var(--table-row-bg);
+    transition: background-color 0.2s;
+}
+
+#courtsTable tbody tr:hover {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+}
+
+/* JS color logic helpers */
+[data-text*="NO"] {
+    color: var(--result-no-color) !important;
+    font-weight: 600;
+}
+
+[data-text*="YES"] {
+    color: var(--result-yes-color) !important;
+    font-weight: 600;
+}
+
+[data-text="NEVER"] {
+    color: var(--result-never-color) !important;
+    font-weight: 600;
+}
+
+[data-text="Unavailable"] {
+    color: var(--result-unavailable-color) !important;
+    font-style: italic;
 }
 
 /* Responsive Design */
@@ -238,13 +373,20 @@ h1 {
         font-size: 24px;
     }
     
-    #judgeSearch, #searchButton {
+    #judgeSearch, #searchInput, #searchButton {
         padding: 12px 15px;
         font-size: 14px;
     }
     
-    .cell {
+    .cell, th, td {
         padding: 12px 10px;
         font-size: 14px;
+    }
+    
+    #theme-toggle-btn {
+        width: 35px;
+        height: 35px;
+        top: 10px;
+        right: 10px;
     }
 }

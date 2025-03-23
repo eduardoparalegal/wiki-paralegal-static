@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/CourtNumber.css">
     <link rel="icon" type="image/x-icon" href="../assets/images/ley.ico">
-
 </head>
 <body>
     <div class="container">
+        <button id="theme-toggle-btn">
+            <i class="fas fa-sun" id="theme-icon-light"></i>
+            <i class="fas fa-moon" id="theme-icon-dark" style="display: none;"></i>
+        </button>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search courts by state, city, or number">
         </div>
@@ -19,9 +22,9 @@
             <table id="courtsTable">
                 <thead>
                     <tr>
+                        <th>State</th>
                         <th>City</th>
-                        <th>Judge</th>
-                        <th>Clerk</th>
+                        <th>Court Name</th>
                         <th>Phone Number</th>
                         <th>Call</th>
                     </tr>
@@ -33,5 +36,6 @@
         </div>
     </div>
     <script src="../assets/js/CourtNumber.js"></script>
+    <script src="../assets/js/darkmode.js"></script>
 </body>
 </html>
