@@ -232,110 +232,129 @@ a.ssolink {
     transform: translateX(0px);
   }
 } 
-
 /* Código adicional para el modo oscuro - agregar al final del archivo styles.css */
 
 /* Estilos del toggle de tema */
 .theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 #theme-toggle-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: #5469d4;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #5469d4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 #theme-toggle-btn:hover {
-    background-color: rgba(84, 105, 212, 0.1);
+  background-color: rgba(84, 105, 212, 0.1);
+}
+
+/* Estilos para el modo claro (por defecto) */
+html[data-theme="light"] body {
+  color: #333;
+}
+
+html[data-theme="light"] span,
+html[data-theme="light"] label {
+  color: #333;
+}
+
+html[data-theme="light"] .footer-link span {
+  color: #333;
+}
+
+html[data-theme="light"] a {
+  color: #5469d4;
+}
+
+html[data-theme="light"] .footer-link a {
+  color: #5469d4;
 }
 
 /* Estilos para el modo oscuro */
 html[data-theme="dark"] {
-    color-scheme: dark;
+  color-scheme: dark;
 }
 
 html[data-theme="dark"] body {
-    background-color: #121212;
-    color: #e0e0e0;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
 html[data-theme="dark"] .box-background--white {
-    background-color: #121212;
+  background-color: #121212;
 }
 
 html[data-theme="dark"] .loginbackground-gridContainer div[style*="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%)"] {
-    background-image: linear-gradient(#121212 0%, #1a1a1a 33%) !important;
+  background-image: linear-gradient(#121212 0%, #1a1a1a 33%) !important;
 }
 
 html[data-theme="dark"] .box-background--gray100 {
-    background-color: #2a2a2a;
+  background-color: #2a2a2a;
 }
 
 html[data-theme="dark"] h1 a, 
 html[data-theme="dark"] a,
 html[data-theme="dark"] span,
 html[data-theme="dark"] label {
-    color: #e0e0e0;
+  color: #e0e0e0;
 }
 
 html[data-theme="dark"] .formbg {
-    background-color: #1e1e1e;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 7px 14px 0px, rgba(0, 0, 0, 0.3) 0px 3px 6px 0px;
+  background-color: #1e1e1e;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 7px 14px 0px, rgba(0, 0, 0, 0.3) 0px 3px 6px 0px;
 }
 
 html[data-theme="dark"] .field input {
-    background-color: #2c2c2c;
-    color: #e0e0e0;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                rgba(100, 100, 100, 0.16) 0px 0px 0px 1px, 
-                rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+              rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+              rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+              rgba(100, 100, 100, 0.16) 0px 0px 0px 1px, 
+              rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+              rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+              rgba(0, 0, 0, 0) 0px 0px 0px 0px;
 }
 
 html[data-theme="dark"] a {
-    color: #7b92ff;
+  color: #7b92ff;
 }
 
 html[data-theme="dark"] .listing a {
-    color: #a0a0a0;
+  color: #a0a0a0;
 }
 
 html[data-theme="dark"] input[type="submit"] {
-    background-color: #3a4987;
+  background-color: #3a4987;
 }
 
 html[data-theme="dark"] #theme-toggle-btn {
-    color: #7b92ff;
+  color: #7b92ff;
 }
 
 html[data-theme="dark"] #theme-toggle-btn:hover {
-    background-color: rgba(123, 146, 255, 0.1);
+  background-color: rgba(123, 146, 255, 0.1);
 }
-
-/* Estas líneas deben agregarse a tu archivo CSS donde están los estilos del tema */
 
 /* Color del sol en modo oscuro (blanco) */
 html[data-theme="dark"] #theme-icon-light {
-  color: white;
+color: white;
 }
 
 /* Color de la luna en modo claro (negro/oscuro) */
 html[data-theme="light"] #theme-icon-dark {
-  color: #333;
+color: #333;
 }
