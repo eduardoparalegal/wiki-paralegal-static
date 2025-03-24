@@ -728,3 +728,52 @@ body {
         display: none;
     }
 }
+
+/* Agregar estas líneas al final de tu CSS */
+
+/* Estilos para scrollbar invisible pero funcional */
+.main-content {
+    scrollbar-width: thin;  /* Para Firefox */
+    scrollbar-color: transparent transparent;  /* Para Firefox */
+}
+
+.main-content::-webkit-scrollbar {
+    width: 6px;  /* Ancho delgado */
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: transparent;  /* Track transparente */
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background-color: transparent;  /* Thumb transparente por defecto */
+    border-radius: 3px;
+}
+
+.main-content:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(84, 105, 212, 0.3);  /* Al hacer hover aparece ligeramente */
+}
+
+/* Asegurar que el contenido sea scrollable en móviles */
+body {
+    overflow: auto;
+    height: auto;
+}
+
+/* Mejorar visibilidad del botón de menú */
+.menu-toggle {
+    display: block;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.menu-toggle:hover, .menu-toggle:focus {
+    background-color: var(--bg-lighter);
+}
+
+@media (min-width: 993px) {
+    .menu-toggle {
+        display: none;
+    }
+}

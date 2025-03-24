@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             sidebar.classList.contains('active') && 
             !sidebar.contains(event.target) && 
-            event.target !== menuToggle
+            event.target !== menuToggle &&
+            !menuToggle.contains(event.target)
         ) {
             sidebar.classList.remove('active');
         }
@@ -177,6 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Configurar animaciones de tarjetas
         setupCardAnimations();
         
+        // Configurar manejo táctil para dispositivos móviles
+        setupTouchBehavior();
+        
+        // Asegurar que el menú hamburguesa funcione en móviles
+        ensureMobileMenuWorks();
+        
         // Actualizar fecha y hora
         updateDateTime();
         setInterval(updateDateTime, 60000); // Actualizar cada minuto
@@ -192,79 +199,110 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicializar tooltips y popovers si existen
         initializeTooltipsAndPopovers();
     }
-    
-    // Función para inicializar tooltips y popovers
-    function initializeTooltipsAndPopovers() {
-        // Agregar tooltip a los botones de acción
-        const actionButtons = document.querySelectorAll('.card-action-btn');
+
+    // Función para mejorar el soporte táctil en dispositivos móviles
+    function setupTouchBehavior() {
+        // Variables para detectar deslizamiento
+        let touchStartX = 0;
+        let touchEndX = 0;
         
-        actionButtons.forEach(button => {
-            button.addEventListener('mouseenter', (e) => {
-                const tooltip = document.createElement('div');
-                tooltip.classList.add('tooltip');
-                tooltip.textContent = 'More Options';
-                
-                const rect = button.getBoundingClientRect();
-                tooltip.style.top = rect.bottom + 5 + 'px';
-                tooltip.style.left = rect.left + (rect.width / 2) - 50 + 'px';
-                
-                document.body.appendChild(tooltip);
-                button.tooltip = tooltip;
-                
-                setTimeout(() => {
-                    tooltip.style.opacity = '1';
-                    tooltip.style.transform = 'translateY(0)';
-                }, 10);
-            });
+        // Detectar inicio de toque
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        // Detectar fin de toque
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        // Manejar deslizamiento
+        function handleSwipe() {
+            // Umbral de deslizamiento (en píxeles)
+            const swipeThreshold = 100;
             
-            button.addEventListener('mouseleave', () => {
-                if (button.tooltip) {
-                    button.tooltip.style.opacity = '0';
-                    button.tooltip.style.transform = 'translateY(-10px)';
-                    
-                    setTimeout(() => {
-                        button.tooltip.remove();
-                        button.tooltip = null;
-                    }, 300);
+            // Deslizamiento de izquierda a derecha cerca del borde izquierdo
+            if (touchEndX - touchStartX > swipeThreshold && touchStartX < 50) {
+                if (!sidebar.classList.contains('active')) {
+                    sidebar.classList.add('active');
+                }
+            }
+            
+            // Deslizamiento de derecha a izquierda con el sidebar abierto
+            if (touchStartX - touchEndX > swipeThreshold && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        }
+    }
+    
+    // Asegurar que el botón de menú funcione en móviles
+    function ensureMobileMenuWorks() {
+        if (menuToggle) {
+            // Eliminar cualquier evento anterior
+            menuToggle.removeEventListener('click', handleMobileMenu);
+            
+            // Añadir evento de clic mejorado
+            menuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Activar el sidebar
+                sidebar.classList.toggle('active');
+                
+                // Si el sidebar está colapsado, expandirlo
+                if (sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.remove('collapsed');
+                    localStorage.setItem('sidebarCollapsed', false);
                 }
             });
-        });
+        }
     }
     
-    // Inicializar la aplicación
-    init();
-});
+    // Inicializar tooltips y popovers bootstrap si existen
+    function initializeTooltipsAndPopovers() {
+        // Verificar si Bootstrap está disponible
+        if (typeof bootstrap !== 'undefined') {
+            // Inicializar tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Inicializar popovers
+            const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+            popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl);
+            });
+        }
+    }
 
-// Función para actualizar la fecha y hora (complementa tu función existente)
-function updateDateTime() {
-    const dateTimeElement = document.getElementById('current-datetime');
-    if (dateTimeElement) {
-        const now = new Date();
-        const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit', 
-            minute: '2-digit'
-        };
-        dateTimeElement.textContent = now.toLocaleDateString('en-US', options);
+    // Función para mejorar despliegue del menú en dispositivos móviles
+    function enhanceMobileMenuVisibility() {
+        // Obtener botón hamburguesa específico (las tres líneas junto a Welcome)
+        const welcomeMenuToggle = document.querySelector('.header-menu-toggle');
         
-        // Verificar recordatorios cada vez que se actualiza la fecha/hora
-        if (typeof checkReminders === 'function') {
-            checkReminders();
+        // Si existe, añadir evento de clic
+        if (welcomeMenuToggle) {
+            welcomeMenuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Desplegar el sidebar
+                sidebar.classList.add('active');
+                
+                // Si está colapsado, expandirlo
+                if (sidebar.classList.contains('collapsed')) {
+                    sidebar.classList.remove('collapsed');
+                    localStorage.setItem('sidebarCollapsed', false);
+                }
+            });
         }
     }
-}
 
-// Inicializar verificación de recordatorios al cargar
-document.addEventListener('DOMContentLoaded', function() {
-    // Código existente...
+    // Iniciar todo
+    init();
     
-    // Verificar recordatorios periódicamente (cada hora)
-    setInterval(function() {
-        if (typeof checkReminders === 'function') {
-            checkReminders();
-        }
-    }, 3600000); // 1 hora
+    // Añadir función para mejorar menú móvil
+    enhanceMobileMenuVisibility();
 });
