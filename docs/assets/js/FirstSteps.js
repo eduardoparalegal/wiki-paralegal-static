@@ -342,7 +342,22 @@ function enhanceMobileMenuToggle() {
     });
 }
 
-// Call this function in your init() or add it to document.addEventListener('DOMContentLoaded', ...)
-// Add this line to your init() function:
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+
+        // Optional: Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    }
+});
 enhanceMobileMenuToggle();
 
