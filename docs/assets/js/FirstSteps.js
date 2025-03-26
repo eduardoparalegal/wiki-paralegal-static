@@ -306,3 +306,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // Añadir función para mejorar menú móvil
     enhanceMobileMenuVisibility();
 });
+
+// Enhanced menu toggle functionality
+function enhanceMobileMenuToggle() {
+    // Get all menu toggle buttons
+    const allMenuToggles = document.querySelectorAll('.menu-toggle, .header-menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    // Add event listener to all menu toggle buttons
+    allMenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Toggle the sidebar active class
+            sidebar.classList.toggle('active');
+            
+            // If the sidebar is collapsed, expand it
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
+        });
+    });
+    
+    // Close sidebar when clicking outside (enhanced version)
+    document.addEventListener('click', function(e) {
+        if (
+            sidebar.classList.contains('active') && 
+            !sidebar.contains(e.target) && 
+            !Array.from(allMenuToggles).some(toggle => toggle.contains(e.target))
+        ) {
+            sidebar.classList.remove('active');
+        }
+    });
+}
+
+// Call this function in your init() or add it to document.addEventListener('DOMContentLoaded', ...)
+// Add this line to your init() function:
+enhanceMobileMenuToggle();
+

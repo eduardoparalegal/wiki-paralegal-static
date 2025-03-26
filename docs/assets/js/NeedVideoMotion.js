@@ -115,7 +115,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Price from Concord requires all Individual and Master Hearings to be in person. (Hearing date: ____)"
         },
         {
             "name": "Star",
@@ -133,7 +133,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Davis-Gumbs from Dallas wants all in person for Master and Individual Hearing (Hearing Date: ______)"
         },
         {
             "name": "Dvorak",
@@ -151,7 +151,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Ellison from Dallas wants all in person for Master, and Individual hearing (Hearing Date: _______)"
         },
         {
             "name": "Fluke",
@@ -160,7 +160,7 @@
             "master": "INTERNET BASED (BOTH WEBEX)",
             "individual": "INTERNET BASED (BOTH WEBEX)",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Fluke (Dallas), internet-based hearing (both via Webex). for Master and Individual hearing"
         },
         {
             "name": "Herrington",
@@ -223,7 +223,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Nugent (Dallas) mandates that both Master and Individual Hearings must be in person."
         },
         {
             "name": "Ozmun",
@@ -232,7 +232,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Ozmun from Dallas Wants all in person for Master and Individual Hearing (Hearing Date: _______)"
         },
         {
             "name": "Sims",
@@ -241,7 +241,7 @@
             "master": "NEVER",
             "individual": "NEVER",
             "notice": null,
-            "copyText": "none"
+            "copyText": " IJ Sims from Dallas wants all in person for Master, and Individual hearing (Hearing Date: _____)"
         },
         {
             "name": "Thielemann",
@@ -340,7 +340,7 @@
             "master": "NO (can appear separately)",
             "individual": "NO",
             "notice": null,
-            "copyText": "none"
+            "copyText": "IJ Paredes Velasco from El Paso No Video Motion required for the Master Hearing (not needed for client or attorney). Hearing Date: ________"
         },
         {
             "name": "Razo",
@@ -493,7 +493,7 @@
         master: "YES (Mention OpenConnect) – USE TELEPHONIC MOTION",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Harris (Orlando) – for Master hearing: Yes (mention OpenConnect). for Individual hearing: Must be in person. (Hearing date: ____)"
     },
     {
         name: "Lang",
@@ -538,7 +538,7 @@
         master: "NEVER",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Adams from San Antonio requires all Individual and Master Hearings to be in person. (Hearing date: ____)"
     },
     {
         name: "Anibal Martinez",
@@ -556,7 +556,7 @@
         master: "NO (for now)",
         individual: "No Available",
         notice: null,
-        copyText: "none"
+        copyText: " IJ Burkhart (San Antonio). No Video Motion required for now (Hearing Date: ______)."
     },
     {
         name: "Elizabeth Martinez",
@@ -610,7 +610,7 @@
         master: "NO",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "ideo Motion not required for the Master Hearing. No VM needed—Webex already set up for the attorney, and the client will most likely appear in person."
     },
     {
         name: "Martin",
@@ -646,7 +646,7 @@
         master: "NO (same room as attorney)",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Santander from San Antonio, for Master hearing No required video motion (Same room as attorney). And for Individual hearing must be in person."
     },
     {
         name: "Tijerina",
@@ -664,7 +664,7 @@
         master: "NO for client and attorney",
         individual: "MUST BE IN PERSON",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Tyrakoski – San Antonio No Video Motion required for the Master Hearing (not needed for client or attorney).Hearing Date: _______"
     },
     {
         name: "Chen",
@@ -709,7 +709,7 @@
         master: "NO",
         individual: "NO",
         notice: null,
-        copyText: "none"
+        copyText: " IJ Gordon from San Francisco,  No VM needed, already Webex for attorney, client in person most likely"
     },
     {
         name: "Nava",
@@ -718,7 +718,7 @@
         master: "NEVER",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Nava from Concord wants all in person for Master, and Individual hearing (Hearing Date: _______)"
     },
     {
         name: "Slayton",
@@ -727,7 +727,7 @@
         master: "NEVER",
         individual: "NEVER",
         notice: null,
-        copyText: "none"
+        copyText: "IJ Slayton from San Francisco wants all in person for Master and Individual hearings (Hearing Date: ______)"
     },
     {
         name: "Star",
@@ -780,8 +780,8 @@
         location: "Seattle",
         master: "NEVER",
         individual: "NEVER",
-        notice: null,
-        copyText: "none"
+        notice: "We have two Johnsons. The one in San Francisco does need the VM draft.",
+        copyText: "IJ Johnson from Seattle wants all in person for Master and Individual hearing. (Hearing Date ______)"
     },
     {
         name: "Mcseveney",
@@ -790,7 +790,7 @@
         master: "NO (Webex Separately)",
         individual: "Check case notice – sometimes yes file vm, sometimes no it's already internet-based (if internet, client Webex)",
         notice: null,
-        copyText: "none"
+        copyText: "IJ McSeveney (Seattle) – No video. Motion required. Webex scheduled separately for Master Hearing. (Hearing Date: ___)"
     },
     {
         name: "Odell",
@@ -845,7 +845,71 @@
         individual: "NEVER",
         notice: null,
         copyText: "none"
-    }
+    },
+    {
+        name: "Nelson",
+        fullName: "IJ Nelson",
+        location: "Concord",
+        master: "YES",
+        individual: "YES",
+        notice: null,
+        copyText: "Video motion has been drafted and uploaded for IJ Nelson (Concord)."
+    },
+    {
+        name: "Bell",
+        fullName: "IJ Bell",
+        location: "Atlanta",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Bell (Atlanta)."
+    },
+    {
+        name: "Daugherty",
+        fullName: "IJ Daugherty",
+        location: "Las Vegas",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Daugherty (Las Vegas)."
+    },
+    {
+        name: "Recio",
+        fullName: "IJ Recio",
+        location: "Miami",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Recio (Miami)."
+    },
+    {
+        name: "Winfield",
+        fullName: "IJ Winfield",
+        location: "Dallas",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Winfield (Dallas)."
+    },
+    {
+        name: "Whipple",
+        fullName: "IJ Whipple",
+        location: "Cleveland",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Whipple (Cleveland)."
+    },
+    {
+        name: "Murray",
+        fullName: "IJ Murray",
+        location: "Atlanta",
+        master: "Not Available",
+        individual: "Not Available",
+        notice: "if you see, “Not available” you have to call or draft the video motion",
+        copyText: "Video motion has been drafted and uploaded for IJ Murray (Atlanta)."
+    },
+    
     ];
     
     function setTheme(theme) {
